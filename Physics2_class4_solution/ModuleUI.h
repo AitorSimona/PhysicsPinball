@@ -3,7 +3,6 @@
 
 #include "Module.h"
 #include "SDL\include\SDL_pixels.h"
-#include "Animation.h"
 
 #define MAX_FONTS 10
 #define MAX_FONT_CHARS 256

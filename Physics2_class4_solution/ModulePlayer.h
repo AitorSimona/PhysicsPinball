@@ -2,9 +2,11 @@
 #include "Module.h"
 #include "Globals.h"
 #include "p2Point.h"
+#include "ModuleTextures.h"
+#include "ModulePhysics.h"
 
 class PhysBody;
-class SDL_Texture;
+
 
 class ModulePlayer : public Module
 {

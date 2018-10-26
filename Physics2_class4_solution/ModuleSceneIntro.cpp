@@ -46,22 +46,22 @@ bool ModuleSceneIntro::Start()
 	
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
-	if (App->audio->isAudioDeviceOpened)
-	{
-		hole_in_fx = App->audio->LoadFx("audio/sound_fx/hole_in.wav");
-	
+	//if (App->audio->isAudioDeviceOpened)
+	//{
+	//	/*hole_in_fx = App->audio->LoadFx("audio/sound_fx/hole_in.wav");*/
+	//
 
-		if (!App->audio->PlayMusic("audio/music/Nightmaren.ogg"))
-			ret = false;
-	}
+	//	if (!App->audio->PlayMusic("audio/music/Nightmaren.ogg"))
+	//		ret = false;
+	//}
 
-	pinball_spritesheet = App->textures->Load("pinball/pinball_sonic_spritesheet.png");
+	//pinball_spritesheet = App->textures->Load("pinball/pinball_sonic_spritesheet.png");
 
-	if (pinball_spritesheet == nullptr)
-	{
-		LOG("Cannot load the animations spritesheet in SceneIntro");
-		ret = false;
-	}
+	//if (pinball_spritesheet == nullptr)
+	//{
+	//	LOG("Cannot load the animations spritesheet in SceneIntro");
+	//	ret = false;
+	//}
 
 	// ---- Setting up SDL_Rect attributes ----
 
@@ -69,41 +69,6 @@ bool ModuleSceneIntro::Start()
 	rect_bg.w = SCREEN_WIDTH;
 	rect_bg.x = 0;
 	rect_bg.y = 0;
-
-	rect_tunnel.h = 428;
-	rect_tunnel.w = 512;
-	rect_tunnel.x = 522;
-	rect_tunnel.y = 0;
-
-	rect_plunge_struct.h = 384;
-	rect_plunge_struct.w = 48;
-	rect_plunge_struct.x = 990;
-	rect_plunge_struct.y = 464;
-
-	rect_rail.h = 632;
-	rect_rail.w = 308;
-	rect_rail.x = 1248;
-	rect_rail.y = 138;
-
-	rect_bush.h = 40;
-	rect_bush.w = 42;
-	rect_bush.x = 186;
-	rect_bush.y = 1248;
-
-	rect_piece_rail.h = 84;
-	rect_piece_rail.w = 64;
-	rect_piece_rail.x = 1147;
-	rect_piece_rail.y = 458;
-
-	rect_central_piece.h = 110;
-	rect_central_piece.w = 112;
-	rect_central_piece.x = 872;
-	rect_central_piece.y = 1348;
-
-	rect_cave.x = 949;
-	rect_cave.y = 1137;
-	rect_cave.w = 84;
-	rect_cave.h = 44;
 
 	// ------- Setting up wall chains -------
 	setWalls();
@@ -117,7 +82,6 @@ bool ModuleSceneIntro::Start()
 	spawnBall();
 
 	//
-
 
 	circle = App->textures->Load("pinball/wheel.png"); 
 	box = App->textures->Load("pinball/crate.png");
@@ -579,7 +543,7 @@ void ModuleSceneIntro::setWalls() {
 
 
 
-	pinball_walls.add(App->physics->CreateChain(0, 0, left_U_top_points, 36, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
+	/*pinball_walls.add(App->physics->CreateChain(0, 0, left_U_top_points, 36, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
 
 	int right_U_top_points[38] =
 	{
@@ -604,7 +568,7 @@ void ModuleSceneIntro::setWalls() {
 		176, 124
 	};
 
-	pinball_walls.add(App->physics->CreateChain(0, 0, right_U_top_points, 38, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
+	pinball_walls.add(App->physics->CreateChain(0, 0, right_U_top_points, 38, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));*/
 
 }
 

@@ -42,6 +42,7 @@ public:
 
 	//Textures and SDL_Rects
 	SDL_Texture* pinball_spritesheet;
+	SDL_Rect rect_bg;
 
 	//PhysBody variables
 	p2List<PhysBody*> balls;
