@@ -55,13 +55,13 @@ bool ModuleSceneIntro::Start()
 	//		ret = false;
 	//}
 
-	//pinball_spritesheet = App->textures->Load("pinball/pinball_sonic_spritesheet.png");
+	pinball_spritesheet = App->textures->Load("pinball/Map big.png");
 
-	//if (pinball_spritesheet == nullptr)
-	//{
-	//	LOG("Cannot load the animations spritesheet in SceneIntro");
-	//	ret = false;
-	//}
+	if (pinball_spritesheet == nullptr)
+	{
+		LOG("Cannot load the animations spritesheet in SceneIntro");
+		ret = false;
+	}
 
 	// ---- Setting up SDL_Rect attributes ----
 
@@ -258,317 +258,164 @@ void ModuleSceneIntro::setWalls() {
 
 	int points_triangle_R_sensor[8] =
 	{
-		359, 629,
-		331, 689,
-		340, 688,
-		362, 640
+		449, 630,
+		491, 573,
+		496, 577,
+		449, 631
 	};
 
 	triangle_R = App->physics->CreateChain(0, 0, points_triangle_R_sensor, 8, groupIndex::RIGID_PINBALL, 1.5f, TRIANGLE);
 
 	int points_triangle_L_sensor[8] =
 	{
-		121, 628,
-		148, 687,
-		140, 684,
-		119, 639
+		210, 586,
+		246, 650,
+		240, 655,
+		209, 586
 	};
 
 	triangle_L = App->physics->CreateChain(0, 0, points_triangle_L_sensor, 8, groupIndex::RIGID_PINBALL, 1.5f, TRIANGLE);
 
-	int points_triangle_L[14] =
+	int points_triangle_L[12] =
 	{
-		114, 679,
-		114, 624,
-		119, 624,
-		150, 690,
-		150, 696,
-		144, 696,
-		116, 681
+		201, 589,
+		196, 630,
+		237, 660,
+		247, 652,
+		207, 583,
+		199, 596
 	};
 
-	pinball_walls.add(App->physics->CreateChain(0, 0, points_triangle_L, 14, groupIndex::RIGID_PINBALL, 0.1f, NO_DEF_));
+	pinball_walls.add(App->physics->CreateChain(0, 0, points_triangle_L, 12, groupIndex::RIGID_PINBALL, 0.1f, NO_DEF_));
 
-	int points_triangle_R[14] =
+	int points_triangle_R[12] =
 	{
-		366, 624,
-		367, 678,
-		365, 681,
-		336, 696,
-		330, 696,
-		330, 690,
-		362, 624
+	    502, 576,
+	    493, 624,
+		454, 639,
+		448, 638,
+		495, 572,
+		502, 576
 	};
 
-	pinball_walls.add(App->physics->CreateChain(0, 0, points_triangle_R, 14, groupIndex::RIGID_PINBALL, 0.1f, NO_DEF_));
+	pinball_walls.add(App->physics->CreateChain(0, 0, points_triangle_R, 12, groupIndex::RIGID_PINBALL, 0.1f, NO_DEF_));
 
 
 	// Static walls
 
-	int points_top_wall[160] =
-	{
-		431, 396,
-		427, 403,
-		423, 407,
-		418, 407,
-		421, 401,
-		427, 391,
-		434, 385,
-		440, 374,
-		462, 307,
-		465, 291,
-		470, 267,
-		483, 227,
-		492, 189,
-		497, 165,
-		497, 133,
-		488, 107,
-		475, 88,
-		461, 75,
-		440, 66,
-		419, 58,
-		385, 58,
-		360, 67,
-		337, 82,
-		320, 104,
-		314, 121,
-		310, 128,
-		310, 142,
-		308, 143,
-		308, 182,
-		314, 198,
-		321, 220,
-		329, 237,
-		334, 240,
-		341, 248,
-		341, 260,
-		332, 260,
-		328, 255,
-		328, 246,
-		316, 236,
-		298, 236,
-		291, 244,
-		284, 244,
-		280, 240,
-		281, 234,
-		282, 228,
-		284, 218,
-		285, 211,
-		286, 196,
-		286, 180,
-		285, 164,
-		285, 148,
-		278, 126,
-		267, 116,
-		259, 109,
-		252, 104,
-		244, 99,
-		237, 96,
-		216, 85,
-		175, 77,
-		155, 77,
-		125, 82,
-		95, 90,
-		74, 99,
-		53, 118,
-		37, 140,
-		31, 151,
-		28, 159,
-		26, 167,
-		24, 177,
-		23, 196,
-		23, 234,
-		29, 268,
-		38, 294,
-		54, 327,
-		60, 352,
-		59, 366,
-		74, 411,
-		72, 411,
-		69, 406,
-		65, 398
+	int points_top_wall[50] = {
+		200, 924,
+		242, 834,
+		89, 741,
+		90, 453,
+		108, 460,
+		96, 443,
+		131, 395,
+		148, 402,
+		134, 383,
+		134, 97,
+		186, 67,
+		258, 42,
+		323, 35,
+		394, 42,
+		450, 53,
+		502, 78,
+		551, 113,
+		597, 161,
+		652, 253,
+		656, 903,
+		607, 901,
+		609, 427,
+		604, 725,
+		466, 806,
+		490, 924
 	};
 
-	pinball_walls.add(App->physics->CreateChain(0, 0, points_top_wall, 160, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
+	pinball_walls.add(App->physics->CreateChain(0, 0, points_top_wall, 50, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
 
-	int points_bottom_wall[108] =
+	int Stick_right_big[6] =
 	{
-		24, 415,
-		32, 432,
-		44, 454,
-		48, 467,
-		44, 472,
-		36, 480,
-		36, 559,
-		38, 565,
-		43, 568,
-		47, 572,
-		47, 580,
-		33, 595,
-		31, 600,
-		29, 614,
-		27, 632,
-		25, 659,
-		24, 665,
-		24, 832,
-		34, 835,
-		54, 835,
-		64, 832,
-		64, 774,
-		71, 775,
-		184, 832,
-		184, 962,
-		296, 962,
-		296, 832,
-		408, 776,
-		416, 774,
-		416, 834,
-		427, 840,
-		446, 840,
-		456, 834,
-		456, 668,
-		453, 638,
-		451, 617,
-		447, 595,
-		433, 579,
-		433, 574,
-		457, 517,
-		457, 511,
-		449, 504,
-		472, 484,
-		472, 825,
-		477, 840,
-		499, 840,
-		504, 825,
-		504, 433,
-		500, 425,
-		494, 420,
-		481, 418,
-		469, 424,
-		469, 420,
-		475, 411
+		571, 485,
+		570, 686,
+		425, 771
 	};
 
-	pinball_walls.add(App->physics->CreateChain(0, 0, points_bottom_wall, 108, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
+	pinball_walls.add(App->physics->CreateChain(0, 0, Stick_right_big, 6, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
 
-	int points_right_L[28] =
+	int Stick_left_big[6] =
 	{
-		310, 758,
-		310, 774,
-		320, 774,
-		407, 730,
-		416, 722,
-		416, 643,
-		413, 636,
-		408, 636,
-		408, 691,
-		403, 704,
-		394, 715,
-		367, 731,
-		327, 750,
-		310, 758
+		128, 487,
+		128, 685,
+		256, 779
 	};
 
-	pinball_walls.add(App->physics->CreateChain(0, 0, points_right_L, 28, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
+	pinball_walls.add(App->physics->CreateChain(0, 0, Stick_left_big, 6, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
 
-	int points_left_L[28] =
+	int Stick_right_small[6] =
 	{
-		170, 758,
-		169, 774,
-		160, 774,
-		108, 748,
-		72, 730,
-		63, 721,
-		64, 642,
-		66, 636,
-		72, 636,
-		72, 691,
-		80, 708,
-		89, 718,
-		97, 722,
-		170, 758
+		537, 532,
+		537, 636,
+		455, 689
 	};
 
-	pinball_walls.add(App->physics->CreateChain(0, 0, points_left_L, 28, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
+	pinball_walls.add(App->physics->CreateChain(0, 0, Stick_right_small, 6, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
 
-	int points_top_U[46]
+	int Stick_left_small[6] =
 	{
-		415, 127,
-		422, 170,
-		420, 202,
-		434, 197,
-		449, 183,
-		455, 163,
-		455, 145,
-		450, 132,
-		443, 122,
-		434, 113,
-		418, 107,
-		403, 106,
-		390, 109,
-		379, 115,
-		369, 123,
-		360, 135,
-		356, 151,
-		356, 167,
-		363, 179,
-		369, 188,
-		373, 192,
-		382, 166,
-		380, 135
+		163, 540,
+		163, 653,
+		232, 695
 	};
 
-	pinball_walls.add(App->physics->CreateChain(0, 0, points_top_U, 46, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
+	pinball_walls.add(App->physics->CreateChain(0, 0, Stick_left_small, 6, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
+	
 
-	int points_left_U[30] =
-	{
-		131, 286,
-		115, 299,
-		108, 305,
-		102, 300,
-		105, 292,
-		108, 283,
-		110, 244,
-		114, 232,
-		125, 225,
-		140, 226,
-		154, 234,
-		167, 247,
-		183, 263,
-		176, 271,
-		160, 259
+	int top_right_block[24] = {
+		549, 307,
+		549, 229,
+		528, 257,
+		540, 225,
+		511, 205,
+		486, 230,
+		503, 197,
+		491, 191,
+		491, 162,
+		483, 193,
+		435, 195,
+		435, 163
 	};
 
-	pinball_walls.add(App->physics->CreateChain(0, 0, points_left_U, 30, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
+	pinball_walls.add(App->physics->CreateChain(0, 0, top_right_block, 24, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
 
 
-
-	/*pinball_walls.add(App->physics->CreateChain(0, 0, left_U_top_points, 36, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
-
-	int right_U_top_points[38] =
-	{
-		182, 127,
-		203, 131,
-		219, 137,
-		233, 152,
-		239, 166,
-		242, 184,
-		243, 191,
-		246, 192,
-		250, 189,
-		250, 174,
-		244, 158,
-		237, 144,
-		226, 133,
-		216, 126,
-		204, 122,
-		192, 119,
-		181, 118,
-		176, 120,
-		176, 124
+	int Scoreblock_right[8] = {
+		400, 164,
+		401, 193,
+		348, 193,
+		348, 164
 	};
 
-	pinball_walls.add(App->physics->CreateChain(0, 0, right_U_top_points, 38, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));*/
+	pinball_walls.add(App->physics->CreateChain(0, 0, Scoreblock_right, 8, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
+
+
+	int Scoreblock_middle[8] = {
+		312, 163,
+		312, 192,
+		258, 191,
+		258, 163
+	};
+
+	pinball_walls.add(App->physics->CreateChain(0, 0, Scoreblock_middle, 8, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
+	
+
+	int Scoreblock_left[8] = {
+		221, 164,
+		221, 194,
+		168, 192,
+		166, 163
+	};
+
+	pinball_walls.add(App->physics->CreateChain(0, 0, Scoreblock_left, 8, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
 
 }
 
