@@ -83,11 +83,29 @@ bool ModuleSceneIntro::Start()
 
 	//
 
-	circle = App->textures->Load("pinball/wheel.png"); 
+	/*circle = App->textures->Load("pinball/wheel.png"); */
 	box = App->textures->Load("pinball/crate.png");
 	rick = App->textures->Load("pinball/rick_head.png");
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
+
+	//Creating score_blocks
+
+	score_block1=App->physics->CreateCircle(375,160,20);
+	score_block2 = App->physics->CreateCircle(285, 160, 20);
+	score_block3 = App->physics->CreateCircle(195, 160, 20);
+	score_block4 = App->physics->CreateCircle(462, 160, 20);
+	score_block5 = App->physics->CreateCircle(205, 265, 20);
+	score_block6 = App->physics->CreateCircle(238, 360, 20);
+	score_block7 = App->physics->CreateCircle(430, 288, 20);
+
+	circles.add(score_block1);
+	circles.add(score_block2);
+	circles.add(score_block3);
+	circles.add(score_block4);
+	circles.add(score_block5);
+	circles.add(score_block6);
+	circles.add(score_block7);
 	//sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50, this);
 
 	return ret;
@@ -106,6 +124,11 @@ bool ModuleSceneIntro::CleanUp()
 	for (p2List_item<PhysBody*>* wall_item = pinball_walls.getFirst(); wall_item != NULL; wall_item = wall_item->next)
 	{
 		App->physics->world->DestroyBody(wall_item->data->body);
+	}
+
+	for (p2List_item<PhysBody*>* circlesitem = circles.getFirst(); circlesitem != NULL; circlesitem = circlesitem->next)
+	{
+		App->physics->world->DestroyBody(circlesitem->data->body);
 	}
 
 	if (triangle_L != NULL)
@@ -162,7 +185,7 @@ update_status ModuleSceneIntro::Update()
 	{
 		int x, y;
 		c->data->GetPosition(x, y);
-		App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
+	/*	App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());*/
 		c = c->next;
 	}
 
@@ -381,6 +404,6 @@ void ModuleSceneIntro::setWalls() {
 
 void ModuleSceneIntro::spawnBall()
 {
-	balls.add(App->physics->CreateBall(488, 800, 14));
+	balls.add(App->physics->CreateBall(630, 750, 14));
 	balls.getLast()->data->listener = this;
 }

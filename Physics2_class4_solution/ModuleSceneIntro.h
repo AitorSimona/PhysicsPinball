@@ -35,7 +35,15 @@ public:
 	uint bonus_fx;
 
 
-	// 
+	//Creating score blocks
+
+	PhysBody* score_block1;
+	PhysBody* score_block2;
+	PhysBody* score_block3;
+	PhysBody* score_block4;
+	PhysBody* score_block5;
+	PhysBody* score_block6;
+	PhysBody* score_block7;
 
 	//Win_Fail_Conditions
 	uint balls_left;
