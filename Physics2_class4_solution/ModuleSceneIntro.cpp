@@ -106,8 +106,8 @@ bool ModuleSceneIntro::Start()
 	circles.add(score_block5);
 	circles.add(score_block6);
 	circles.add(score_block7);
-	//sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50, this);
-
+	
+	sensor = App->physics->CreateCircleSensor(513, 233, 18, this);
 	return ret;
 }
 
@@ -178,6 +178,12 @@ update_status ModuleSceneIntro::Update()
 		balls.getLast()->data->listener = this;
 	}
 
+	// ----- Ball creation with sensors -----
+	if (spawnBall_Oncollision == true)
+	{
+		App->scene_intro->spawnBall2();
+		spawnBall_Oncollision = false;
+	}
 
 	// All draw functions ------------------------------------------------------
 	p2List_item<PhysBody*>* c = circles.getFirst();
@@ -223,7 +229,6 @@ update_status ModuleSceneIntro::Update()
 
 void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	int x, y;
 
 	App->audio->PlayFx(bonus_fx);
 
@@ -236,6 +241,17 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 				App->ui->score += 400;
 				/*App->audio->PlayFx(triangle_fx);*/
 
+			}
+
+			if (bodyB->physType == SENSOR)
+			{
+				if (spawnBall_Oncollision == false)
+				{
+					if (prev_ballCount == balls.count())
+					{
+						spawnBall_Oncollision = true;
+					}
+				}
 			}
 		}
 
@@ -415,5 +431,11 @@ void ModuleSceneIntro::setWalls() {
 void ModuleSceneIntro::spawnBall()
 {
 	balls.add(App->physics->CreateBall(630, 750, 12));
+	balls.getLast()->data->listener = this;
+}
+
+void ModuleSceneIntro::spawnBall2()
+{
+	balls.add(App->physics->CreateBall(513, 233, 12));
 	balls.getLast()->data->listener = this;
 }

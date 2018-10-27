@@ -19,6 +19,7 @@ public:
 
 	//Main functionals calls
 	void spawnBall();
+	void spawnBall2();
 	void setWalls();
 
 public:
@@ -28,6 +29,10 @@ public:
 
 	PhysBody* sensor;
 	bool sensed;
+
+	//Circle sensor oncollision checker
+	bool spawnBall_Oncollision = false;
+	int prev_ballCount = 1;
 
 	SDL_Texture* circle;
 	SDL_Texture* box;

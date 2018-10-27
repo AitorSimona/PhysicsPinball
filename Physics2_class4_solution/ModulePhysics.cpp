@@ -425,6 +425,7 @@ PhysBody* ModulePhysics::CreateCircleSensor(int x, int y, int radius, Module *li
 	b->SetUserData(pbody);
 	pbody->width = pbody->height = radius;
 	pbody->listener = listener;
+	pbody->physType = SENSOR;
 
 	return pbody;
 }
@@ -478,6 +479,7 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 	pbody->width = width;
 	pbody->height = height;
 	pbody->listener = listener;
+	pbody->physType = SENSOR;
 
 	return pbody;
 }
