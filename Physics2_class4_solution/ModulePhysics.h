@@ -71,6 +71,7 @@ public:
 	PhysBody* CreatePlunge();
 
 	PhysBody* CreateCircle(int x, int y, int radius);
+	PhysBody* CreateCircleSensor(int x, int y, int radius, Module *listener);
 	PhysBody* CreateRectangle(int x, int y, int width, int height);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, Module* listener);
 	PhysBody* CreateChain(int x, int y, int* points, int size, groupIndex index, float restitution, PhysBody_Type type);
