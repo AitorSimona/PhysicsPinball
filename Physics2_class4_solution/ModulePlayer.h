@@ -22,6 +22,7 @@ public:
 
 	PhysBody* left_flipper;
 	PhysBody* right_flipper;
+	PhysBody* plunge;
 
 	SDL_Rect rect_rFlipper;
 	SDL_Rect rect_lFlipper;
@@ -29,5 +30,6 @@ public:
 	SDL_Texture * flippers_tex;
 
 	uint flipper_hit_fx;
+	uint plunge_fx;
 
 };

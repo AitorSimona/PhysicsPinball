@@ -224,6 +224,65 @@ PhysBody* ModulePhysics::CreateLeftFlipper()
 	return rbody;
 }
 
+PhysBody* ModulePhysics::CreatePlunge()
+{
+	b2BodyDef bodyA;
+	bodyA.type = b2_dynamicBody;
+	bodyA.position.Set(PIXEL_TO_METERS(487), PIXEL_TO_METERS(830));
+
+	b2Body* b1 = world->CreateBody(&bodyA);
+	b2PolygonShape box;
+	box.SetAsBox(PIXEL_TO_METERS(20) * 0.5f, PIXEL_TO_METERS(4) * 0.5f);
+
+	b2FixtureDef fixture;
+	fixture.shape = &box;
+	fixture.density = 20.0f;
+	fixture.restitution = 0.1f;
+	fixture.filter.groupIndex = groupIndex::PLUNGE_BOTTOM;
+
+	b1->CreateFixture(&fixture);
+
+	b2BodyDef bodyB;
+	bodyB.type = b2_staticBody;
+	bodyB.position.Set(PIXEL_TO_METERS(487), PIXEL_TO_METERS(811));
+
+	b2Body* b2 = world->CreateBody(&bodyB);
+	b2PolygonShape box1;
+	box1.SetAsBox(PIXEL_TO_METERS(20) * 0.5f, PIXEL_TO_METERS(20) * 0.5f);
+
+	b2FixtureDef fixture2;
+	fixture2.shape = &box1;
+	fixture2.density = 1.0f;
+	fixture2.filter.groupIndex = groupIndex::BALL;
+
+	b2->CreateFixture(&fixture2);
+
+	b2PrismaticJointDef jointDef;
+	jointDef.bodyA = b2;
+	jointDef.bodyB = b1;
+	jointDef.collideConnected = true;
+
+	jointDef.localAxisA.Set(0, 1);
+	jointDef.localAxisA.Normalize();
+	jointDef.localAnchorA.Set(0, 0);
+	jointDef.localAnchorB.Set(0, 0);
+
+	jointDef.lowerTranslation = -1.0f;
+	jointDef.upperTranslation = 1.0f;
+	jointDef.enableLimit = true;
+	jointDef.maxMotorForce = 200.0f;
+	jointDef.motorSpeed = -200.0f;
+	jointDef.enableMotor = true;
+	world->CreateJoint(&jointDef);
+
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b1;
+	pbody->bodyB = b2;
+	b1->SetUserData(pbody);
+
+	return pbody;
+}
+
 PhysBody* ModulePhysics::CreateBall(int x, int y, int radius)
 {
 	b2BodyDef body;

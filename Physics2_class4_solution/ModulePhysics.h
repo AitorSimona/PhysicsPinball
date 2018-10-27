@@ -67,6 +67,7 @@ public:
 	PhysBody* CreateRightFlipper();
 	PhysBody* CreateLeftFlipper();
 	PhysBody* CreateBall(int x, int y, int radius);
+	PhysBody* CreatePlunge();
 
 	PhysBody* CreateCircle(int x, int y, int radius);
 	PhysBody* CreateRectangle(int x, int y, int width, int height);

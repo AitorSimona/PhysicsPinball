@@ -22,11 +22,13 @@ bool ModulePlayer::Start()
 
 	right_flipper = App->physics->CreateRightFlipper();
 	left_flipper = App->physics->CreateLeftFlipper();
+	plunge = App->physics->CreatePlunge();
 
 	flippers_tex = App->textures->Load("pinball/pinball_sonic_spritesheet.png");
 
 	if (App->audio->isAudioDeviceOpened) {
 		flipper_hit_fx = App->audio->LoadFx("audio/sound_fx/flipper_hit.wav");
+		plunge_fx = App->audio->LoadFx("audio/sound_fx/fire_ball.wav");
 	}
 
 	rect_rFlipper.h = 20;
@@ -59,6 +61,13 @@ bool ModulePlayer::CleanUp()
 		App->physics->world->DestroyBody(right_flipper->bodyB);
 		App->physics->world->DestroyBody(right_flipper->body);
 		right_flipper = NULL;
+	}
+
+	if (plunge != NULL)
+	{
+		App->physics->world->DestroyBody(plunge->body);
+		App->physics->world->DestroyBody(plunge->bodyB);
+		plunge = NULL;
 	}
 
 
@@ -98,6 +107,9 @@ update_status ModulePlayer::Update()
 		right_flipper->body->ApplyTorque(65.0f, true);
 	else
 		right_flipper->body->ApplyTorque(-10.0f, true);
+
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+		plunge->body->ApplyForceToCenter(b2Vec2(0, 250), true);
 
 	return UPDATE_CONTINUE;
 }
