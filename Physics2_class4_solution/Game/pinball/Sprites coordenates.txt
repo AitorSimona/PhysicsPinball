@@ -1,0 +1,5 @@
+ball: 0,0,23,23
+flipper small left: 0,23,64,18
+flipper big left: 0,42,81,22
+flipper small right:17,65,64,18
+flipper big right:0,85,81,22
