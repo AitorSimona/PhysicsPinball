@@ -195,27 +195,25 @@ PhysBody* ModulePhysics::CreateLeftFlipper(int x, int y, int flippertype,int cha
 
 	if (flippertype == 1)
 	{
-		int leftFlipperCoords[18] =
+		int leftFlipperCoords[14] =
 		{
-			3, 49,
-			9, 44,
-			30, 45,
-			45, 51,
-			78, 60,
-			49, 63,
-			16, 62,
-			3, 59,
-			3, 49
+			1, 50,
+			10, 44,
+			26, 44,
+			80, 62,
+			13, 62,
+			2, 58,
+			1, 50
 		};
 
-		b2Vec2 leftFlipperVec[18 / 2];
+		b2Vec2 leftFlipperVec[14 / 2];
 
 		for (uint i = 0; i < chainsize / 2; ++i)
 		{
 			leftFlipperVec[i].Set(PIXEL_TO_METERS(leftFlipperCoords[i * 2 + 0]), PIXEL_TO_METERS(leftFlipperCoords[i * 2 + 1]));
 		}
 
-		rectangleShape.Set(leftFlipperVec, chainsize/2);
+		rectangleShape.Set(leftFlipperVec, chainsize / 2);
 
 	}
 
@@ -238,7 +236,7 @@ PhysBody* ModulePhysics::CreateLeftFlipper(int x, int y, int flippertype,int cha
 			leftFlipperVec[i].Set(PIXEL_TO_METERS(leftFlipperCoords[i * 2 + 0]), PIXEL_TO_METERS(leftFlipperCoords[i * 2 + 1]));
 		}
 
-		rectangleShape.Set(leftFlipperVec, chainsize/2);
+		rectangleShape.Set(leftFlipperVec, chainsize / 2);
 
 	}
 

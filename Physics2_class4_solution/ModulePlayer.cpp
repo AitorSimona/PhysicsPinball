@@ -21,7 +21,7 @@ bool ModulePlayer::Start()
 	LOG("Loading player");
 
 	right_flipper = App->physics->CreateRightFlipper(352,675,1,16);
-	left_flipper = App->physics->CreateLeftFlipper(250,720,1,18);
+	left_flipper = App->physics->CreateLeftFlipper(250,720,1,14);
 
 	right_flipper2 = App->physics->CreateRightFlipper(378, 615,2,12);
 	left_flipper2 = App->physics->CreateLeftFlipper(228, 660,2,12);
@@ -114,10 +114,10 @@ update_status ModulePlayer::Update()
 	App->renderer->Blit(flippers_tex, 250, 765, &rect_lFlipper, 1.0f, left_flipper->GetRotation(), anchorLVec.x, anchorLVec.y -4);
 
 	b2Vec2 anchorRVec2 = right_flipper2->joint->GetAnchorB();
-	App->renderer->Blit(flippers_tex, 258, 760, &rect_rFlipper2, 1.0f, right_flipper2->GetRotation(), anchorRVec2.x + 48, anchorRVec2.y - 4);
+	App->renderer->Blit(flippers_tex, 390, 680, &rect_rFlipper2, 1.0f, right_flipper2->GetRotation(), anchorRVec2.x + 60, anchorRVec2.y - 8);
 
 	b2Vec2 anchorLVec2 = left_flipper2->joint->GetAnchorB();
-	App->renderer->Blit(flippers_tex, 166, 760, &rect_lFlipper2, 1.0f, left_flipper2->GetRotation(), anchorLVec2.x, anchorLVec2.y - 4);
+	App->renderer->Blit(flippers_tex, 225, 685, &rect_lFlipper2, 1.0f, left_flipper2->GetRotation(), anchorLVec2.x, anchorLVec2.y - 4);
 
 	// ----- Flippers and plunge audio control -----
 
