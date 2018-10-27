@@ -50,7 +50,9 @@ public:
 
 	//Textures and SDL_Rects
 	SDL_Texture* pinball_spritesheet;
+	SDL_Texture* flippers_and_ball;
 	SDL_Rect rect_bg;
+	SDL_Rect ballsprite;
 
 	//PhysBody variables
 	p2List<PhysBody*> balls;
