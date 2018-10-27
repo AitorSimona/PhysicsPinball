@@ -25,7 +25,6 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
-	//
 	balls_left = 3;
 	App->ui->score = 0;
 
@@ -55,7 +54,13 @@ bool ModuleSceneIntro::Start()
 	//		ret = false;
 	//}
 
+	//Loading textures
+
 	pinball_spritesheet = App->textures->Load("pinball/Map big.png");
+	box = App->textures->Load("pinball/crate.png");
+	rick = App->textures->Load("pinball/rick_head.png");
+	flippers_and_ball = App->textures->Load("pinball/Sprites.png");
+	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
 	if (pinball_spritesheet == nullptr)
 	{
@@ -70,24 +75,19 @@ bool ModuleSceneIntro::Start()
 	rect_bg.x = 0;
 	rect_bg.y = 0;
 
+	ballsprite.x = 0;
+	ballsprite.y = 0;
+	ballsprite.h = 23;
+	ballsprite.w = 23;
+		
+
 	// ------- Setting up wall chains -------
 	setWalls();
-
-	//// ----- Creating sensors for the ball -----
-	//setSensors();
 
 	App->player->Enable();
 
 	// Spawning ball
 	spawnBall();
-
-	//
-
-	/*circle = App->textures->Load("pinball/wheel.png"); */
-	box = App->textures->Load("pinball/crate.png");
-	rick = App->textures->Load("pinball/rick_head.png");
-	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
-
 
 	//Creating score_blocks
 
@@ -174,7 +174,7 @@ update_status ModuleSceneIntro::Update()
 	// ----- Ball creation -----
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
-		balls.add(App->physics->CreateBall(App->input->GetMouseX(), App->input->GetMouseY(), 14));
+		balls.add(App->physics->CreateBall(App->input->GetMouseX(), App->input->GetMouseY(), 12));
 		balls.getLast()->data->listener = this;
 	}
 
@@ -185,7 +185,7 @@ update_status ModuleSceneIntro::Update()
 	{
 		int x, y;
 		c->data->GetPosition(x, y);
-	/*	App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());*/
+		//App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
 		c = c->next;
 	}
 
@@ -207,6 +207,14 @@ update_status ModuleSceneIntro::Update()
 		c->data->GetPosition(x, y);
 		App->renderer->Blit(rick, x, y, NULL, 1.0f, c->data->GetRotation());
 		c = c->next;
+	}
+
+	for (p2List_item<PhysBody*>* bc = balls.getFirst(); bc != NULL; bc = bc->next)
+	{
+		int x, y;
+		bc->data->GetPosition(x, y);
+		App->renderer->Blit(flippers_and_ball, x, y, &ballsprite, 1.0f,bc->data->GetRotation());
+		
 	}
 
 	return UPDATE_CONTINUE;
@@ -404,6 +412,6 @@ void ModuleSceneIntro::setWalls() {
 
 void ModuleSceneIntro::spawnBall()
 {
-	balls.add(App->physics->CreateBall(630, 750, 14));
+	balls.add(App->physics->CreateBall(630, 750, 12));
 	balls.getLast()->data->listener = this;
 }
