@@ -20,8 +20,11 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 
-	right_flipper = App->physics->CreateRightFlipper();
-	left_flipper = App->physics->CreateLeftFlipper();
+	right_flipper = App->physics->CreateRightFlipper(118,8);
+	left_flipper = App->physics->CreateLeftFlipper(85,10);
+
+	right_flipper2 = App->physics->CreateRightFlipper(150, -70);
+	left_flipper2 = App->physics->CreateLeftFlipper(60, -70);
 	plunge = App->physics->CreatePlunge();
 
 	flippers_tex = App->textures->Load("pinball/pinball_sonic_spritesheet.png");
@@ -36,10 +39,20 @@ bool ModulePlayer::Start()
 	rect_rFlipper.x = 398;
 	rect_rFlipper.y = 1314;
 
+	rect_rFlipper2.h = 20;
+	rect_rFlipper2.w = 60;
+	rect_rFlipper2.x = 398;
+	rect_rFlipper2.y = 1314;
+
 	rect_lFlipper.h = 20;
 	rect_lFlipper.w = 60;
 	rect_lFlipper.x = 398;
 	rect_lFlipper.y = 1342;
+
+	rect_lFlipper2.h = 20;
+	rect_lFlipper2.w = 60;
+	rect_lFlipper2.x = 398;
+	rect_lFlipper2.y = 1342;
 
 	return true;
 }
@@ -61,6 +74,20 @@ bool ModulePlayer::CleanUp()
 		App->physics->world->DestroyBody(right_flipper->bodyB);
 		App->physics->world->DestroyBody(right_flipper->body);
 		right_flipper = NULL;
+	}
+
+	if (left_flipper2 != NULL)
+	{
+		App->physics->world->DestroyBody(left_flipper2->bodyB);
+		App->physics->world->DestroyBody(left_flipper2->body);
+		left_flipper2 = NULL;
+	}
+
+	if (right_flipper2 != NULL)
+	{
+		App->physics->world->DestroyBody(right_flipper2->bodyB);
+		App->physics->world->DestroyBody(right_flipper2->body);
+		right_flipper2 = NULL;
 	}
 
 	if (plunge != NULL)
@@ -86,6 +113,11 @@ update_status ModulePlayer::Update()
 	b2Vec2 anchorLVec = left_flipper->joint->GetAnchorB();
 	App->renderer->Blit(flippers_tex, 166, 760, &rect_lFlipper, 1.0f, left_flipper->GetRotation(), anchorLVec.x, anchorLVec.y - 4);
 
+	b2Vec2 anchorRVec2 = right_flipper2->joint->GetAnchorB();
+	App->renderer->Blit(flippers_tex, 258, 760, &rect_rFlipper2, 1.0f, right_flipper2->GetRotation(), anchorRVec2.x + 48, anchorRVec2.y - 4);
+
+	b2Vec2 anchorLVec2 = left_flipper2->joint->GetAnchorB();
+	App->renderer->Blit(flippers_tex, 166, 760, &rect_lFlipper2, 1.0f, left_flipper2->GetRotation(), anchorLVec2.x, anchorLVec2.y - 4);
 
 	// ----- Flippers and plunge audio control -----
 
@@ -99,14 +131,27 @@ update_status ModulePlayer::Update()
 	// ----- Flippers torque -----
 
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	{
 		left_flipper->body->ApplyTorque(-65.0f, true);
+		left_flipper2->body->ApplyTorque(-65.0f, true);
+	}
 	else
+	{
 		left_flipper->body->ApplyTorque(10.0f, true);
+		left_flipper2->body->ApplyTorque(10.0f, true);
+	}
+
 
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	{
 		right_flipper->body->ApplyTorque(65.0f, true);
+		right_flipper2->body->ApplyTorque(65.0f, true);
+	}
 	else
+	{
 		right_flipper->body->ApplyTorque(-10.0f, true);
+		right_flipper2->body->ApplyTorque(-10.0f, true);
+	}
 
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		plunge->body->ApplyForceToCenter(b2Vec2(0, 250), true);

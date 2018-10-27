@@ -75,11 +75,11 @@ update_status ModulePhysics::PreUpdate()
 	return UPDATE_CONTINUE;
 }
 
-PhysBody* ModulePhysics::CreateRightFlipper()
+PhysBody* ModulePhysics::CreateRightFlipper(int x, int y)
 {
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(PIXEL_TO_METERS(0), PIXEL_TO_METERS(0));
+	bodyDef.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body *rectangleBody = world->CreateBody(&bodyDef);
 
@@ -150,11 +150,11 @@ PhysBody* ModulePhysics::CreateRightFlipper()
 	return rbody;
 }
 
-PhysBody* ModulePhysics::CreateLeftFlipper()
+PhysBody* ModulePhysics::CreateLeftFlipper(int x, int y)
 {
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(PIXEL_TO_METERS(0), PIXEL_TO_METERS(0));
+	bodyDef.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body *rectangleBody = world->CreateBody(&bodyDef);
 
@@ -228,7 +228,7 @@ PhysBody* ModulePhysics::CreatePlunge()
 {
 	b2BodyDef bodyA;
 	bodyA.type = b2_dynamicBody;
-	bodyA.position.Set(PIXEL_TO_METERS(487), PIXEL_TO_METERS(830));
+	bodyA.position.Set(PIXEL_TO_METERS(631), PIXEL_TO_METERS(820));
 
 	b2Body* b1 = world->CreateBody(&bodyA);
 	b2PolygonShape box;
@@ -244,7 +244,7 @@ PhysBody* ModulePhysics::CreatePlunge()
 
 	b2BodyDef bodyB;
 	bodyB.type = b2_staticBody;
-	bodyB.position.Set(PIXEL_TO_METERS(487), PIXEL_TO_METERS(811));
+	bodyB.position.Set(PIXEL_TO_METERS(631), PIXEL_TO_METERS(811));
 
 	b2Body* b2 = world->CreateBody(&bodyB);
 	b2PolygonShape box1;

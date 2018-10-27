@@ -64,8 +64,8 @@ public:
 	bool CleanUp();
 
 
-	PhysBody* CreateRightFlipper();
-	PhysBody* CreateLeftFlipper();
+	PhysBody* CreateRightFlipper(int x, int y);
+	PhysBody* CreateLeftFlipper(int x, int y);
 	PhysBody* CreateBall(int x, int y, int radius);
 	PhysBody* CreatePlunge();
 

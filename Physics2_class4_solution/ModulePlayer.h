@@ -22,10 +22,16 @@ public:
 
 	PhysBody* left_flipper;
 	PhysBody* right_flipper;
+
+	PhysBody* left_flipper2;
+	PhysBody* right_flipper2;
 	PhysBody* plunge;
 
 	SDL_Rect rect_rFlipper;
 	SDL_Rect rect_lFlipper;
+
+	SDL_Rect rect_rFlipper2;
+	SDL_Rect rect_lFlipper2;
 
 	SDL_Texture * flippers_tex;
 

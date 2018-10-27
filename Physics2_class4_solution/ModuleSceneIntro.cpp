@@ -195,58 +195,18 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 	App->audio->PlayFx(bonus_fx);
 
-	/*for (p2List_item<PhysBody*>* bc = balls.getFirst(); bc != NULL; bc = bc->next)
+	for (p2List_item<PhysBody*>* bc = balls.getFirst(); bc != NULL; bc = bc->next)
 	{
 		if (bodyA == bc->data)
 		{
 			if (bodyB->physType == TRIANGLE)
 			{
 				App->ui->score += 400;
-				App->audio->PlayFx(triangle_fx);
+				/*App->audio->PlayFx(triangle_fx);*/
 			}
-
-			
-			if (bodyB->physType == EXIT_CANON)
-			{
-				ball_created = false;
-				balls.getLast()->data->listener = this;
-				for (p2List_item<PhysBody*>* p_w = pinball_walls.getFirst(); p_w != NULL; p_w = p_w->next)
-				{
-					b2Fixture* fixture = p_w->data->body->GetFixtureList();
-
-					while (fixture != NULL)
-					{
-						b2Filter newFilter;
-						newFilter.groupIndex = groupIndex::RIGID_PINBALL;
-						fixture->SetFilterData(newFilter);
-						fixture = fixture->GetNext();
-					}
-				}
-
-				b2Fixture* r_flipper_fixture = App->player->right_flipper->body->GetFixtureList();
-
-				while (r_flipper_fixture != NULL)
-				{
-					b2Filter newFilter;
-					newFilter.groupIndex = groupIndex::RIGID_PINBALL;
-					r_flipper_fixture->SetFilterData(newFilter);
-					r_flipper_fixture = r_flipper_fixture->GetNext();
-				}
-
-				b2Fixture* l_flipper_fixture = App->player->left_flipper->body->GetFixtureList();
-
-				while (l_flipper_fixture != NULL)
-				{
-					b2Filter newFilter;
-					newFilter.groupIndex = groupIndex::RIGID_PINBALL;
-					l_flipper_fixture->SetFilterData(newFilter);
-					l_flipper_fixture = l_flipper_fixture->GetNext();
-				}
-				break;
-			}
-
 		}
-	}*/
+
+	}
 }
 
 
