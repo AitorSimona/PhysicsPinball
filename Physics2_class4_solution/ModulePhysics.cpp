@@ -75,7 +75,7 @@ update_status ModulePhysics::PreUpdate()
 	return UPDATE_CONTINUE;
 }
 
-PhysBody* ModulePhysics::CreateRightFlipper(int x, int y)
+PhysBody* ModulePhysics::CreateRightFlipper(int x, int y, int flippertype,int chainsize)
 {
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -85,23 +85,56 @@ PhysBody* ModulePhysics::CreateRightFlipper(int x, int y)
 
 	b2PolygonShape flipperShape;
 
-	int rightFlipperCoords[10] =
+	if (flippertype == 1)
 	{
-		313, 761,
-		257, 761,
-		258, 766,
-		300, 778,
-		313, 778
-	};
+		int rightFlipperCoords[16] =
+		{
+			79, 93,
+			71, 86,
+			52, 86,
+			2, 103,
+			5, 105,
+			65, 104,
+			75, 100,
+			79, 93
+		};
 
-	b2Vec2 rightFlipperVec[10 / 2];
+		b2Vec2 rightFlipperVec[16 / 2];
 
-	for (uint i = 0; i < 10 / 2; ++i)
-	{
-		rightFlipperVec[i].Set(PIXEL_TO_METERS(rightFlipperCoords[i * 2 + 0]), PIXEL_TO_METERS(rightFlipperCoords[i * 2 + 1]));
+		for (uint i = 0; i < chainsize / 2; ++i)
+		{
+			rightFlipperVec[i].Set(PIXEL_TO_METERS(rightFlipperCoords[i * 2 + 0]), PIXEL_TO_METERS(rightFlipperCoords[i * 2 + 1]));
+		}
+
+
+
+		flipperShape.Set(rightFlipperVec, chainsize / 2);
+
 	}
 
-	flipperShape.Set(rightFlipperVec, 5);
+	else
+	{
+		int rightFlipperCoords[12] =
+		{
+			79, 71,
+			65, 67,
+			18, 78,
+			23, 80,
+			76, 80,
+			79, 71
+		};
+
+		b2Vec2 rightFlipperVec[12 / 2];
+
+		for (uint i = 0; i < chainsize / 2; ++i)
+		{
+			rightFlipperVec[i].Set(PIXEL_TO_METERS(rightFlipperCoords[i * 2 + 0]), PIXEL_TO_METERS(rightFlipperCoords[i * 2 + 1]));
+		}
+
+
+
+		flipperShape.Set(rightFlipperVec, chainsize / 2);
+	}
 
 	// ----- Setting up flipper body ------
 	b2FixtureDef rectangleFixtureDef;
@@ -114,7 +147,7 @@ PhysBody* ModulePhysics::CreateRightFlipper(int x, int y)
 
 	// ------ Settting joint point -------
 	b2Vec2 centerRectangle = rectangleBody->GetWorldCenter();
-	centerRectangle += (b2Vec2(PIXEL_TO_METERS(20), 0));
+	centerRectangle += (b2Vec2(PIXEL_TO_METERS(chainsize*2), 0));
 
 	// ------ Setting up circle body ----- 
 	b2BodyDef circleBodyDef;
@@ -150,7 +183,7 @@ PhysBody* ModulePhysics::CreateRightFlipper(int x, int y)
 	return rbody;
 }
 
-PhysBody* ModulePhysics::CreateLeftFlipper(int x, int y)
+PhysBody* ModulePhysics::CreateLeftFlipper(int x, int y, int flippertype,int chainsize)
 {
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -160,23 +193,54 @@ PhysBody* ModulePhysics::CreateLeftFlipper(int x, int y)
 
 	b2PolygonShape rectangleShape;
 
-	int leftFlipperCoords[10] =
+	if (flippertype == 1)
 	{
-		166, 761,
-		223, 761,
-		221, 766,
-		180, 778,
-		166, 778
-	};
+		int leftFlipperCoords[18] =
+		{
+			3, 49,
+			9, 44,
+			30, 45,
+			45, 51,
+			78, 60,
+			49, 63,
+			16, 62,
+			3, 59,
+			3, 49
+		};
 
-	b2Vec2 leftFlipperVec[10 / 2];
+		b2Vec2 leftFlipperVec[18 / 2];
 
-	for (uint i = 0; i < 10 / 2; ++i)
-	{
-		leftFlipperVec[i].Set(PIXEL_TO_METERS(leftFlipperCoords[i * 2 + 0]), PIXEL_TO_METERS(leftFlipperCoords[i * 2 + 1]));
+		for (uint i = 0; i < chainsize / 2; ++i)
+		{
+			leftFlipperVec[i].Set(PIXEL_TO_METERS(leftFlipperCoords[i * 2 + 0]), PIXEL_TO_METERS(leftFlipperCoords[i * 2 + 1]));
+		}
+
+		rectangleShape.Set(leftFlipperVec, chainsize/2);
+
 	}
 
-	rectangleShape.Set(leftFlipperVec, 5);
+	else
+	{
+		int leftFlipperCoords[12] =
+		{
+			1, 30,
+			14, 25,
+			60, 37,
+			46, 39,
+			5, 38,
+			1, 30
+		};
+
+		b2Vec2 leftFlipperVec[12 / 2];
+
+		for (uint i = 0; i < chainsize / 2; ++i)
+		{
+			leftFlipperVec[i].Set(PIXEL_TO_METERS(leftFlipperCoords[i * 2 + 0]), PIXEL_TO_METERS(leftFlipperCoords[i * 2 + 1]));
+		}
+
+		rectangleShape.Set(leftFlipperVec, chainsize/2);
+
+	}
 
 	// ----- Setting up flipper body ------
 	b2FixtureDef rectangleFixtureDef;
@@ -187,7 +251,7 @@ PhysBody* ModulePhysics::CreateLeftFlipper(int x, int y)
 
 	// ------ Settting joint point -------
 	b2Vec2 centerRectangle = rectangleBody->GetWorldCenter();
-	centerRectangle += (b2Vec2(PIXEL_TO_METERS(-20), 0));
+	centerRectangle += (b2Vec2(PIXEL_TO_METERS(-chainsize*2), 0));
 
 	// ------ Setting up circle body ----- 
 	b2BodyDef circleBodyDef;

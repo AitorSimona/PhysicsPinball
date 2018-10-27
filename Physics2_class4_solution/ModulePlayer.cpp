@@ -20,39 +20,39 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 
-	right_flipper = App->physics->CreateRightFlipper(118,8);
-	left_flipper = App->physics->CreateLeftFlipper(85,10);
+	right_flipper = App->physics->CreateRightFlipper(352,675,1,16);
+	left_flipper = App->physics->CreateLeftFlipper(250,720,1,18);
 
-	right_flipper2 = App->physics->CreateRightFlipper(150, -70);
-	left_flipper2 = App->physics->CreateLeftFlipper(60, -70);
+	right_flipper2 = App->physics->CreateRightFlipper(378, 615,2,12);
+	left_flipper2 = App->physics->CreateLeftFlipper(228, 660,2,12);
 	plunge = App->physics->CreatePlunge();
 
-	flippers_tex = App->textures->Load("pinball/pinball_sonic_spritesheet.png");
+	flippers_tex = App->textures->Load("pinball/Sprites.png");
 
 	if (App->audio->isAudioDeviceOpened) {
 		flipper_hit_fx = App->audio->LoadFx("audio/sound_fx/flipper_hit.wav");
 		plunge_fx = App->audio->LoadFx("audio/sound_fx/fire_ball.wav");
 	}
 
-	rect_rFlipper.h = 20;
-	rect_rFlipper.w = 60;
-	rect_rFlipper.x = 398;
-	rect_rFlipper.y = 1314;
+	rect_rFlipper.h = 22;
+	rect_rFlipper.w = 81;
+	rect_rFlipper.x = 0;
+	rect_rFlipper.y = 85;
 
-	rect_rFlipper2.h = 20;
-	rect_rFlipper2.w = 60;
-	rect_rFlipper2.x = 398;
-	rect_rFlipper2.y = 1314;
+	rect_rFlipper2.h = 18;
+	rect_rFlipper2.w = 64;
+	rect_rFlipper2.x = 17;
+	rect_rFlipper2.y = 65;
 
-	rect_lFlipper.h = 20;
-	rect_lFlipper.w = 60;
-	rect_lFlipper.x = 398;
-	rect_lFlipper.y = 1342;
+	rect_lFlipper.h = 22;
+	rect_lFlipper.w = 81;
+	rect_lFlipper.x = 0;
+	rect_lFlipper.y = 42;
 
-	rect_lFlipper2.h = 20;
-	rect_lFlipper2.w = 60;
-	rect_lFlipper2.x = 398;
-	rect_lFlipper2.y = 1342;
+	rect_lFlipper2.h = 18;
+	rect_lFlipper2.w = 64;
+	rect_lFlipper2.x = 0;
+	rect_lFlipper2.y = 23;
 
 	return true;
 }
@@ -108,10 +108,10 @@ update_status ModulePlayer::Update()
 	// ----- Blitting flippers -----
 
 	b2Vec2 anchorRVec = right_flipper->joint->GetAnchorB();
-	App->renderer->Blit(flippers_tex, 258, 760, &rect_rFlipper, 1.0f, right_flipper->GetRotation(), anchorRVec.x + 48, anchorRVec.y - 4);
+	App->renderer->Blit(flippers_tex, 350, 760, &rect_rFlipper, 1.0f, right_flipper->GetRotation(), anchorRVec.x + 70, anchorRVec.y-12);
 
 	b2Vec2 anchorLVec = left_flipper->joint->GetAnchorB();
-	App->renderer->Blit(flippers_tex, 166, 760, &rect_lFlipper, 1.0f, left_flipper->GetRotation(), anchorLVec.x, anchorLVec.y - 4);
+	App->renderer->Blit(flippers_tex, 250, 765, &rect_lFlipper, 1.0f, left_flipper->GetRotation(), anchorLVec.x, anchorLVec.y -4);
 
 	b2Vec2 anchorRVec2 = right_flipper2->joint->GetAnchorB();
 	App->renderer->Blit(flippers_tex, 258, 760, &rect_rFlipper2, 1.0f, right_flipper2->GetRotation(), anchorRVec2.x + 48, anchorRVec2.y - 4);

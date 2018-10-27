@@ -26,6 +26,7 @@ enum groupIndex {
 enum PhysBody_Type {
 	BALL_,
 	TRIANGLE,
+	SENSOR,
 	
 	NO_DEF_
 };
@@ -64,8 +65,8 @@ public:
 	bool CleanUp();
 
 
-	PhysBody* CreateRightFlipper(int x, int y);
-	PhysBody* CreateLeftFlipper(int x, int y);
+	PhysBody* CreateRightFlipper(int x, int y,int flippertype,int chainsize);
+	PhysBody* CreateLeftFlipper(int x, int y,int flippertype,int chainsize);
 	PhysBody* CreateBall(int x, int y, int radius);
 	PhysBody* CreatePlunge();
 

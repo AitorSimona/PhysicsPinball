@@ -178,6 +178,7 @@ update_status ModuleSceneIntro::Update()
 		balls.getLast()->data->listener = this;
 	}
 
+
 	// All draw functions ------------------------------------------------------
 	p2List_item<PhysBody*>* c = circles.getFirst();
 
@@ -234,6 +235,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			{
 				App->ui->score += 400;
 				/*App->audio->PlayFx(triangle_fx);*/
+
 			}
 		}
 
