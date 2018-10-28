@@ -26,6 +26,7 @@ public:
 	PhysBody* left_flipper2;
 	PhysBody* right_flipper2;
 	PhysBody* plunge;
+	PhysBody* gear;
 
 	SDL_Rect rect_rFlipper;
 	SDL_Rect rect_lFlipper;

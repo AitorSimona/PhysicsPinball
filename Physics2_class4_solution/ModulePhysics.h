@@ -69,6 +69,7 @@ public:
 
 	PhysBody* CreateRightFlipper(int x, int y,int flippertype,int chainsize);
 	PhysBody* CreateLeftFlipper(int x, int y,int flippertype,int chainsize);
+	PhysBody* CreateGear(int x, int y, int chainsize);
 	PhysBody* CreateBall(int x, int y, int radius);
 	PhysBody* CreatePlunge();
 

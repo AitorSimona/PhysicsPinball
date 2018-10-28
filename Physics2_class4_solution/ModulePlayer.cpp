@@ -25,7 +25,10 @@ bool ModulePlayer::Start()
 
 	right_flipper2 = App->physics->CreateRightFlipper(378, 615,2,12);
 	left_flipper2 = App->physics->CreateLeftFlipper(228, 660,2,12);
+	
 	plunge = App->physics->CreatePlunge();
+
+	gear = App->physics->CreateGear(260,235,66);
 
 	flippers_tex = App->textures->Load("pinball/Sprites.png");
 
@@ -100,7 +103,13 @@ bool ModulePlayer::CleanUp()
 		App->physics->world->DestroyBody(plunge->bodyB);
 		plunge = NULL;
 	}
-
+	
+	if (gear != NULL)
+	{
+		App->physics->world->DestroyBody(gear->body);
+		App->physics->world->DestroyBody(gear->bodyB);
+		gear = NULL;
+	}
 
 	return true;
 }

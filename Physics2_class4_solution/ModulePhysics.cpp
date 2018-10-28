@@ -286,6 +286,109 @@ PhysBody* ModulePhysics::CreateLeftFlipper(int x, int y, int flippertype,int cha
 	return rbody;
 }
 
+PhysBody* ModulePhysics::CreateGear(int x, int y, int chainsize)
+{
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+
+	b2Body *rectangleBody = world->CreateBody(&bodyDef);
+
+	b2ChainShape rectangleShape;
+	
+	int GearCoords[66] = {
+	56, 43,
+	56, 2,
+	72, 2,
+	72, 22,
+	88, 30,
+	102, 13,
+	113, 24,
+	98, 40,
+	106, 56,
+	127, 55,
+	126, 72,
+	106, 72,
+	98, 88,
+	113, 102,
+	103, 113,
+	87, 98,
+	72, 105,
+	72, 127,
+	55, 127,
+	56, 106,
+	40, 99,
+	25, 114,
+	14, 103,
+	28, 88,
+	23, 72,
+	1, 71,
+	1, 55,
+	22, 55,
+	28, 40,
+	13, 25,
+	26, 14,
+	40, 29,
+	61, 19
+	};
+
+	b2Vec2 GearVec[66 / 2];
+
+	for (uint i = 0; i < chainsize / 2; ++i)
+	{
+		GearVec[i].Set(PIXEL_TO_METERS(GearCoords[i * 2 + 0]), PIXEL_TO_METERS(GearCoords[i * 2 + 1]));
+	}
+
+	rectangleShape.CreateLoop(GearVec, 33);
+
+	// ----- Setting up Gear body ------
+	b2FixtureDef rectangleFixtureDef;
+	rectangleFixtureDef.shape = &rectangleShape;
+	rectangleFixtureDef.density = 10.f; 
+	rectangleFixtureDef.restitution = 1.3f;
+	rectangleFixtureDef.filter.groupIndex = groupIndex::RIGID_PINBALL;
+	rectangleBody->CreateFixture(&rectangleFixtureDef);
+
+	// ------ Settting joint point -------
+	b2Vec2 centerRectangle = rectangleBody->GetWorldCenter();
+	centerRectangle += (b2Vec2(PIXEL_TO_METERS(65), PIXEL_TO_METERS(65)));
+
+	// ------ Setting up circle body ----- 
+	b2BodyDef circleBodyDef;
+	circleBodyDef.type = b2_staticBody;
+	circleBodyDef.position.Set(centerRectangle.x, centerRectangle.y);
+
+	b2CircleShape circleToRotate;
+	circleToRotate.m_radius = PIXEL_TO_METERS(0.5f);
+	b2FixtureDef circleToRotateFixtureDef;
+	circleToRotateFixtureDef.shape = &circleToRotate;
+	circleToRotateFixtureDef.filter.groupIndex = groupIndex::RIGID_PINBALL;
+
+	b2Body *circleToRotateBody = world->CreateBody(&circleBodyDef);
+
+	circleToRotateBody->CreateFixture(&circleToRotateFixtureDef);
+
+	// ----- Setting up joint between Gear and circle ------
+	b2RevoluteJointDef revoluteJointGear;
+	revoluteJointGear.Initialize(rectangleBody, circleToRotateBody, centerRectangle);
+	revoluteJointGear.upperAngle = 0.0f;
+	revoluteJointGear.lowerAngle = -0.0f;
+	revoluteJointGear.enableLimit = false;
+	revoluteJointGear.maxMotorTorque = 10.0;
+	revoluteJointGear.motorSpeed = 5.0;
+	revoluteJointGear.enableMotor = true;
+	b2Joint *jointToReturn = world->CreateJoint(&revoluteJointGear);
+
+	PhysBody* rbody = new PhysBody();
+	rbody->body = rectangleBody;
+	rbody->bodyB = circleToRotateBody;
+	rbody->joint = jointToReturn;
+	rectangleBody->SetUserData(rbody);
+	rbody->physType = NO_DEF_;
+
+	return rbody;
+}
+
 PhysBody* ModulePhysics::CreatePlunge()
 {
 	b2BodyDef bodyA;
