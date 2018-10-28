@@ -38,4 +38,5 @@ public:
 	uint flipper_hit_fx;
 	uint plunge_fx;
 
+	b2Vec2 plungespritepos;
 };

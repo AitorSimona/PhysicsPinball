@@ -56,8 +56,12 @@ public:
 
 	//Textures and SDL_Rects
 	SDL_Texture* pinball_spritesheet;
+	SDL_Texture* plunger_sprite;
+	SDL_Texture* background2;
 	SDL_Texture* flippers_and_ball;
 	SDL_Rect rect_bg;
+	SDL_Rect rect_plunger;
+	SDL_Rect rect_bg2;
 	SDL_Rect ballsprite;
 
 	//PhysBody variables
@@ -68,6 +72,17 @@ public:
 	PhysBody* triangle_R;
 
 
-	//Music and FX
+	//FX
+	uint ballcreate;
+	uint flipper;
+	uint gameover;
+	uint plunger;
+	uint score_block_hit;
+	uint ball_lost_fx;
+	uint triangle_sound;
 
+	bool music_playing;
+	bool load_fxonce;
+
+	uint highest_score;
 };

@@ -116,12 +116,12 @@ PhysBody* ModulePhysics::CreateRightFlipper(int x, int y, int flippertype,int ch
 	{
 		int rightFlipperCoords[12] =
 		{
-			79, 71,
-			65, 67,
-			18, 78,
-			23, 80,
-			76, 80,
-			79, 71
+			21, 80,
+			72, 80,
+			79, 77,
+			76, 70,
+			62, 67,
+			18, 79
 		};
 
 		b2Vec2 rightFlipperVec[12 / 2];
@@ -139,7 +139,7 @@ PhysBody* ModulePhysics::CreateRightFlipper(int x, int y, int flippertype,int ch
 	// ----- Setting up flipper body ------
 	b2FixtureDef rectangleFixtureDef;
 	rectangleFixtureDef.shape = &flipperShape;
-	rectangleFixtureDef.density = 1;
+	rectangleFixtureDef.density = 10.0f;
 	rectangleFixtureDef.friction = 0.0f;
 	rectangleFixtureDef.restitution = 0.1f;
 	rectangleFixtureDef.filter.groupIndex = groupIndex::RIGID_PINBALL;
@@ -221,12 +221,12 @@ PhysBody* ModulePhysics::CreateLeftFlipper(int x, int y, int flippertype,int cha
 	{
 		int leftFlipperCoords[12] =
 		{
-			1, 30,
-			14, 25,
-			60, 37,
-			46, 39,
-			5, 38,
-			1, 30
+			2, 30,
+			12, 26,
+			61, 37,
+			10, 39,
+			2, 34,
+			8, 30
 		};
 
 		b2Vec2 leftFlipperVec[12 / 2];
@@ -243,7 +243,7 @@ PhysBody* ModulePhysics::CreateLeftFlipper(int x, int y, int flippertype,int cha
 	// ----- Setting up flipper body ------
 	b2FixtureDef rectangleFixtureDef;
 	rectangleFixtureDef.shape = &rectangleShape;
-	rectangleFixtureDef.density = 1;
+	rectangleFixtureDef.density = 10.0f;
 	rectangleFixtureDef.filter.groupIndex = groupIndex::RIGID_PINBALL;
 	rectangleBody->CreateFixture(&rectangleFixtureDef);
 
@@ -294,7 +294,7 @@ PhysBody* ModulePhysics::CreatePlunge()
 
 	b2Body* b1 = world->CreateBody(&bodyA);
 	b2PolygonShape box;
-	box.SetAsBox(PIXEL_TO_METERS(20) * 0.5f, PIXEL_TO_METERS(4) * 0.5f);
+	box.SetAsBox(PIXEL_TO_METERS(30) * 0.5f, PIXEL_TO_METERS(4) * 0.5f);
 
 	b2FixtureDef fixture;
 	fixture.shape = &box;
@@ -314,7 +314,7 @@ PhysBody* ModulePhysics::CreatePlunge()
 
 	b2FixtureDef fixture2;
 	fixture2.shape = &box1;
-	fixture2.density = 1.0f;
+	fixture2.density = 10.0f;
 	fixture2.filter.groupIndex = groupIndex::BALL;
 
 	b2->CreateFixture(&fixture2);

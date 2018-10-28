@@ -51,7 +51,7 @@ update_status ModuleUI::Update()
 
 	}
 
-	p2SString title("PINBALL 2	              SCORE: %i    BALLS LEFT: %i", App->ui->score, App->scene_intro->balls_left);
+	p2SString title("PINBALL 2	              SCORE: %i           HIGHEST: %i          BALLS LEFT: %i", App->ui->score,App->scene_intro->highest_score ,App->scene_intro->balls_left);
 
 	App->window->SetTitle(title.GetString());
 

@@ -27,11 +27,7 @@ bool ModuleSceneIntro::Start()
 
 	balls_left = 3;
 	App->ui->score = 0;
-
-	if (!App->audio->IsEnabled() && App->audio->active) {
-		App->audio->Enable();
-		App->audio->Init();
-	}
+	highest_score = 0;
 
 	if (!App->textures->IsEnabled()) {
 		App->textures->Enable();
@@ -45,22 +41,25 @@ bool ModuleSceneIntro::Start()
 	
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
-	//Initializing variables
+	//-------Initializing variables---------
 	spawnBall_Oncollision = false;
 	prev_ballCount = 1;
 	ball_lost = false;
 
-	
-		/*hole_in_fx = App->audio->LoadFx("audio/sound_fx/hole_in.wav");*/
-	
+	//--------Loading Fx----------
 
-		if (!App->audio->PlayMusic("audio/music/bg_music.ogg"))
-			ret = false;
+	ballcreate = App->audio->LoadFx("audio/sound_fx/balcreate.ogg");
+	flipper = App->audio->LoadFx("audio/sound_fx/flipper.ogg");
+	gameover= App->audio->LoadFx("audio/sound_fx/gameover.ogg");
+	plunger= App->audio->LoadFx("audio/sound_fx/plunger.ogg");
+	score_block_hit = App->audio->LoadFx("audio/sound_fx/Score_block_hit.ogg");
+	ball_lost_fx = App->audio->LoadFx("audio/sound_fx/ball_lost.ogg");
+	triangle_sound = App->audio->LoadFx("audio/sound_fx/triangle_sound.ogg");
 	
-
-	//Loading textures
-
-	pinball_spritesheet = App->textures->Load("pinball/Map big.png");
+	//------Loading textures----------
+	pinball_spritesheet = App->textures->Load("pinball/Final_map.png");
+	plunger_sprite = App->textures->Load("pinball/plungersprite.png");
+	background2 = App->textures->Load("pinball/Background_bot_right.png");
 	box = App->textures->Load("pinball/crate.png");
 	rick = App->textures->Load("pinball/rick_head.png");
 	flippers_and_ball = App->textures->Load("pinball/Sprites.png");
@@ -79,6 +78,16 @@ bool ModuleSceneIntro::Start()
 	rect_bg.x = 0;
 	rect_bg.y = 0;
 
+	rect_bg2.h = 26;
+	rect_bg2.w = 116;
+	rect_bg2.x = 0;
+	rect_bg2.y = 0;
+
+	rect_plunger.h = 90;
+	rect_plunger.w = 10;
+	rect_plunger.x = 0;
+	rect_plunger.y = 0;
+
 	ballsprite.x = 0;
 	ballsprite.y = 0;
 	ballsprite.h = 23;
@@ -90,7 +99,7 @@ bool ModuleSceneIntro::Start()
 
 	//Setting sensors
 	sensors.add(App->physics->CreateCircleSensor(513, 233, 18, this));
-	sensors.add(App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2 - 20, SCREEN_HEIGHT + 80, 150, 80, DEAD_SENSOR));
+	sensors.add(App->physics->CreateRectangleSensor(0, SCREEN_HEIGHT+80, SCREEN_WIDTH*2, 80, DEAD_SENSOR));
 
 	//Creating score_blocks
 
@@ -114,6 +123,9 @@ bool ModuleSceneIntro::Start()
 
 	// Spawning ball
 	spawnBall();
+
+
+	music_playing = false;
 
 	return ret;
 }
@@ -155,19 +167,6 @@ bool ModuleSceneIntro::CleanUp()
 		triangle_R = NULL;
 	}
 
-
-	App->player->CleanUp();
-	App->player->Disable();
-
-	App->ui->CleanUp();
-	App->ui->Disable();
-
-	App->audio->CleanUp();
-	App->audio->Disable();
-
-	App->textures->CleanUp();
-	App->textures->Disable();
-
 	balls.clear();
 	pinball_walls.clear();
 	sensors.clear();
@@ -179,8 +178,21 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
+	//---------Playing main theme----------
+	//if (!App->audio->PlayMusic("audio/music/bg_music.ogg"))
+
+	if (music_playing == false)
+	{
+		music_playing = true;
+		App->audio->PlayMusic("audio/music/bg_music.ogg");
+	}
+		
 	// Blitting background
 	App->renderer->Blit(pinball_spritesheet, 0, 0, &rect_bg, 1.0f);
+
+	//Blitting plunge
+	//plungespritepos = App->player->plunge->body->GetPosition();
+	//App->renderer->Blit(plunger_sprite, plungespritepos.x, plungespritepos.y, &rect_plunger, 1.0f);
 
 	// Blitting Bouncing triangles
 	//App->renderer->Blit(pinball_spritesheet, 113, 621, &triangle_L_anim.GetCurrentFrame(), 1.0f);
@@ -259,10 +271,16 @@ update_status ModuleSceneIntro::Update()
 	}
 
 	//Game is over!
-	if (balls_left == 0 && App->fade->FadeIsOver())
+	if (balls_left == 0 )
 	{
-		/*App->audio->PlayFx(win_fx);*/
-		App->fade->FadeToBlack(this, this, 7.0f);
+		if (App->ui->score > highest_score)
+		{
+			highest_score = App->ui->score;
+		}
+		App->audio->PlayFx(gameover);
+		App->ui->score = 0;
+		balls_left = 3;
+		spawnBall();
 	}
 
 	return UPDATE_CONTINUE;
@@ -280,7 +298,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			if (bodyB->physType == TRIANGLE)
 			{
 				App->ui->score += 400;
-				/*App->audio->PlayFx(triangle_fx);*/
+				App->audio->PlayFx(triangle_sound);
 
 			}
 
@@ -297,14 +315,14 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 			if (bodyB->physType == DEAD_SENSOR)
 			{
-				/*App->audio->PlayFx(lose_fx);*/
+				App->audio->PlayFx(ball_lost_fx);
 				ball_lost = true;
 			}
 
 			if (bodyB->physType == SCORE_BLOCK)
 			{
 				App->ui->score += 100;
-				/*App->audio->PlayFx(lose_fx);*/
+				App->audio->PlayFx(score_block_hit);
 			}
 		}
 
@@ -479,16 +497,33 @@ void ModuleSceneIntro::setWalls() {
 
 	pinball_walls.add(App->physics->CreateChain(0, 0, Scoreblock_left, 8, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
 
+
+	int aux_stick[4] = {
+		436, 771,
+		410, 807
+	};
+
+	pinball_walls.add(App->physics->CreateChain(0, 0, aux_stick, 4, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
+
+	int aux_stick2[4] = {
+		460, 687,
+		454, 699
+	};
+
+	pinball_walls.add(App->physics->CreateChain(0, 0, aux_stick2, 4, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
+
 }
 
 void ModuleSceneIntro::spawnBall()
 {
 	balls.add(App->physics->CreateBall(630, 750, 12));
 	balls.getLast()->data->listener = this;
+	App->audio->PlayFx(ballcreate);
 }
 
 void ModuleSceneIntro::spawnBall2()
 {
 	balls.add(App->physics->CreateBall(513, 233, 12));
 	balls.getLast()->data->listener = this;
+	App->audio->PlayFx(ballcreate);
 }

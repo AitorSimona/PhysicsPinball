@@ -85,8 +85,8 @@ bool ModuleAudio::PlayMusic(const char* path, float fade_time)
 {
 	bool ret = true;
 
-	/*if (!active)
-		return false;*/
+	//if (!active)
+	//	return false;
 
 	if (music != NULL)
 	{
@@ -140,8 +140,8 @@ unsigned int ModuleAudio::LoadFx(const char* path)
 {
 	unsigned int ret = 0;
 
-	/*if (!active)
-		return 0;*/
+	//if (!active)
+	//	return 0;
 
 	Mix_Chunk* chunk = Mix_LoadWAV(path);
 

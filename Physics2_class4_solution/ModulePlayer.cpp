@@ -29,10 +29,10 @@ bool ModulePlayer::Start()
 
 	flippers_tex = App->textures->Load("pinball/Sprites.png");
 
-	if (App->audio->isAudioDeviceOpened) {
-		flipper_hit_fx = App->audio->LoadFx("audio/sound_fx/flipper_hit.wav");
-		plunge_fx = App->audio->LoadFx("audio/sound_fx/fire_ball.wav");
-	}
+	//if (App->audio->isAudioDeviceOpened) {
+	//	flipper_hit_fx = App->audio->LoadFx("audio/sound_fx/flipper_hit.wav");
+	//	plunge_fx = App->audio->LoadFx("audio/sound_fx/fire_ball.wav");
+	//}
 
 	rect_rFlipper.h = 22;
 	rect_rFlipper.w = 81;
@@ -53,6 +53,10 @@ bool ModulePlayer::Start()
 	rect_lFlipper2.w = 64;
 	rect_lFlipper2.x = 0;
 	rect_lFlipper2.y = 23;
+
+	plungespritepos.x = 0;
+	plungespritepos.y = 0;
+
 
 	return true;
 }
@@ -119,13 +123,19 @@ update_status ModulePlayer::Update()
 	b2Vec2 anchorLVec2 = left_flipper2->joint->GetAnchorB();
 	App->renderer->Blit(flippers_tex, 225, 685, &rect_lFlipper2, 1.0f, left_flipper2->GetRotation(), anchorLVec2.x, anchorLVec2.y - 4);
 
+	// ------ Blitting plunge -----
+	plungespritepos = plunge->body->GetPosition();
+	App->renderer->Blit(App->scene_intro->plunger_sprite, METERS_TO_PIXELS(plungespritepos.x-5), METERS_TO_PIXELS(plungespritepos.y-7), &App->scene_intro->rect_plunger, 1.0f);
+
+	App->renderer->Blit(App->scene_intro->background2, SCREEN_WIDTH - App->scene_intro->rect_bg2.w, SCREEN_HEIGHT- App->scene_intro->rect_bg2.h, &App->scene_intro->rect_bg2);
+
 	// ----- Flippers and plunge audio control -----
 
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
-		App->audio->PlayFx(flipper_hit_fx);
+		App->audio->PlayFx(App->scene_intro->flipper);
 
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
-		App->audio->PlayFx(flipper_hit_fx);
+		App->audio->PlayFx(App->scene_intro->flipper);
 
 
 	// ----- Flippers torque -----
@@ -152,6 +162,9 @@ update_status ModulePlayer::Update()
 		right_flipper->body->ApplyTorque(-10.0f, true);
 		right_flipper2->body->ApplyTorque(-10.0f, true);
 	}
+
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN)
+		App->audio->PlayFx(App->scene_intro->plunger);
 
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		plunge->body->ApplyForceToCenter(b2Vec2(0, 250), true);
