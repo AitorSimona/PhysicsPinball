@@ -22,7 +22,7 @@ github: https://github.com/OhCaXulu
 
 ## Project Github
 
-        https://github.com/AitorSimona/PhysicsPinball
+  github:  https://github.com/AitorSimona/PhysicsPinball
 
 ### Disclosure
 
@@ -41,7 +41,7 @@ Little blue circles do not have any behaviour
 
 ## License
 
-© Aitor Simona Bouzas
+Â© Aitor Simona Bouzas
 
 Licensed under the [MIT License](LICENSE.txt)
 
