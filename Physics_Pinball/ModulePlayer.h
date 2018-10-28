@@ -20,6 +20,7 @@ public:
 
 public:
 
+	//---------- Physbodies ---------
 	PhysBody* left_flipper;
 	PhysBody* right_flipper;
 
@@ -28,16 +29,18 @@ public:
 	PhysBody* plunge;
 	PhysBody* gear;
 
+
+	//---------- Flipper rects ---------
 	SDL_Rect rect_rFlipper;
 	SDL_Rect rect_lFlipper;
 
 	SDL_Rect rect_rFlipper2;
 	SDL_Rect rect_lFlipper2;
 
+
+	//---------- Flipper texture ---------
 	SDL_Texture * flippers_tex;
 
-	uint flipper_hit_fx;
-	uint plunge_fx;
-
+	//---------- Plunge Sprite position ------
 	b2Vec2 plungespritepos;
 };

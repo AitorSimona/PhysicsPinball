@@ -1,4 +1,3 @@
-
 #include "Module.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
@@ -8,7 +7,6 @@
 #include "ModulePlayer.h"
 #include "ModulePhysics.h"
 #include "ModuleSceneIntro.h"
-#include "ModuleFadeToBlack.h"
 #include "ModuleUI.h"
 
 #include "Application.h"
@@ -23,7 +21,6 @@ Application::Application()
 	player = new ModulePlayer(this);
 	scene_intro = new ModuleSceneIntro(this);
 	physics = new ModulePhysics(this);
-	fade = new ModuleFadeToBlack(this);
 	ui = new ModuleUI(this);
 
 	// The order of calls is very important!
@@ -45,7 +42,7 @@ Application::Application()
 	AddModule(player);
 	player->Disable();
 
-	AddModule(fade);
+	//UI
 	AddModule(ui);
 }
 

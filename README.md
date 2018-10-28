@@ -20,7 +20,7 @@ github: https://github.com/AitorSimona
  -Pol Bosch Matesanz
 github: https://github.com/OhCaXulu
 
-##Project Github
+## Project Github
 
         https://github.com/AitorSimona/PhysicsPinball
 
@@ -30,12 +30,14 @@ We do not own any of the sprites, music and fx used in this game. Authors credit
  
 https://www.classicgame.com/game/Pinball+2      
 
-###Differences with the original
+### Differences with the original
 
 Blue rectangles do not have any behaviour
 100 score blocks are not animated
 Red rectangles do not have any behaviour
 Balls on map are limited to 2
+Gear does not rotate
+Little blue circles do not have any behaviour
 
 ## License
 
@@ -43,7 +45,7 @@ Balls on map are limited to 2
 
 Licensed under the [MIT License](LICENSE.txt)
 
-##Combo implemented
+## Combo implemented
 
 When the ball passes through the hole on the top right part of the map, another ball appears
     

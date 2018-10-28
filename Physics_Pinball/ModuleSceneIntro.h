@@ -59,10 +59,12 @@ public:
 	SDL_Texture* plunger_sprite;
 	SDL_Texture* background2;
 	SDL_Texture* flippers_and_ball;
+	SDL_Texture* gear_texture;
 	SDL_Rect rect_bg;
 	SDL_Rect rect_plunger;
 	SDL_Rect rect_bg2;
 	SDL_Rect ballsprite;
+	SDL_Rect gearsprite;
 
 	//PhysBody variables
 	p2List<PhysBody*> balls;

@@ -66,7 +66,7 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
-
+	// ------------ Declaring main physics functions ----------
 	PhysBody* CreateRightFlipper(int x, int y,int flippertype,int chainsize);
 	PhysBody* CreateLeftFlipper(int x, int y,int flippertype,int chainsize);
 	PhysBody* CreateGear(int x, int y, int chainsize);

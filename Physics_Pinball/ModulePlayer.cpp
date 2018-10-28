@@ -32,11 +32,8 @@ bool ModulePlayer::Start()
 
 	flippers_tex = App->textures->Load("pinball/Sprites.png");
 
-	//if (App->audio->isAudioDeviceOpened) {
-	//	flipper_hit_fx = App->audio->LoadFx("audio/sound_fx/flipper_hit.wav");
-	//	plunge_fx = App->audio->LoadFx("audio/sound_fx/fire_ball.wav");
-	//}
 
+	// ----------- Rectangles -----------
 	rect_rFlipper.h = 22;
 	rect_rFlipper.w = 81;
 	rect_rFlipper.x = 0;
@@ -57,6 +54,7 @@ bool ModulePlayer::Start()
 	rect_lFlipper2.x = 0;
 	rect_lFlipper2.y = 23;
 
+	//Plunge sprite position
 	plungespritepos.x = 0;
 	plungespritepos.y = 0;
 
@@ -137,6 +135,10 @@ update_status ModulePlayer::Update()
 	App->renderer->Blit(App->scene_intro->plunger_sprite, METERS_TO_PIXELS(plungespritepos.x-5), METERS_TO_PIXELS(plungespritepos.y-7), &App->scene_intro->rect_plunger, 1.0f);
 
 	App->renderer->Blit(App->scene_intro->background2, SCREEN_WIDTH - App->scene_intro->rect_bg2.w, SCREEN_HEIGHT- App->scene_intro->rect_bg2.h, &App->scene_intro->rect_bg2);
+
+	// ------ Blitting gear -----
+
+	App->renderer->Blit(App->scene_intro->gear_texture, 260, 235, &App->scene_intro->gearsprite);
 
 	// ----- Flippers and plunge audio control -----
 

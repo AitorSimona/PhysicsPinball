@@ -7,7 +7,6 @@
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
 #include "ModulePlayer.h"
-#include "ModuleFadeToBlack.h"
 #include "ModuleUI.h"
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -25,27 +24,16 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
-	balls_left = 3;
-	App->ui->score = 0;
-	highest_score = 0;
-
-	if (!App->textures->IsEnabled()) {
-		App->textures->Enable();
-		App->textures->Init();
-	}
-
-	if (!App->ui->IsEnabled()) {
-		App->ui->Enable();
-		App->ui->Start();
-	}
-	
-	App->renderer->camera.x = App->renderer->camera.y = 0;
-
 	//-------Initializing variables---------
 	spawnBall_Oncollision = false;
 	prev_ballCount = 1;
 	ball_lost = false;
-
+	balls_left = 3;
+	App->ui->score = 0;
+	highest_score = 0;
+	App->renderer->camera.x = App->renderer->camera.y = 0;
+	music_playing = false;
+	
 	//--------Loading Fx----------
 
 	ballcreate = App->audio->LoadFx("audio/sound_fx/balcreate.ogg");
@@ -60,10 +48,8 @@ bool ModuleSceneIntro::Start()
 	pinball_spritesheet = App->textures->Load("pinball/Final_map.png");
 	plunger_sprite = App->textures->Load("pinball/plungersprite.png");
 	background2 = App->textures->Load("pinball/Background_bot_right.png");
-	box = App->textures->Load("pinball/crate.png");
-	rick = App->textures->Load("pinball/rick_head.png");
+	gear_texture = App->textures->Load("pinball/gear.png");
 	flippers_and_ball = App->textures->Load("pinball/Sprites.png");
-	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
 	if (pinball_spritesheet == nullptr)
 	{
@@ -92,6 +78,11 @@ bool ModuleSceneIntro::Start()
 	ballsprite.y = 0;
 	ballsprite.h = 23;
 	ballsprite.w = 23;
+
+	gearsprite.x = 0;
+	gearsprite.y = 0;
+	gearsprite.h = 128;
+	gearsprite.w = 128;
 		
 
 	// ------- Setting up wall chains -------
@@ -119,13 +110,11 @@ bool ModuleSceneIntro::Start()
 	circles.add(score_block6);
 	circles.add(score_block7);
 
+	// Enabling player module
 	App->player->Enable();
 
 	// Spawning ball
 	spawnBall();
-
-
-	music_playing = false;
 
 	return ret;
 }
@@ -179,7 +168,6 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update()
 {
 	//---------Playing main theme----------
-	//if (!App->audio->PlayMusic("audio/music/bg_music.ogg"))
 
 	if (music_playing == false)
 	{
@@ -189,14 +177,6 @@ update_status ModuleSceneIntro::Update()
 		
 	// Blitting background
 	App->renderer->Blit(pinball_spritesheet, 0, 0, &rect_bg, 1.0f);
-
-	//Blitting plunge
-	//plungespritepos = App->player->plunge->body->GetPosition();
-	//App->renderer->Blit(plunger_sprite, plungespritepos.x, plungespritepos.y, &rect_plunger, 1.0f);
-
-	// Blitting Bouncing triangles
-	//App->renderer->Blit(pinball_spritesheet, 113, 621, &triangle_L_anim.GetCurrentFrame(), 1.0f);
-	//App->renderer->Blit(pinball_spritesheet, 325, 621, &triangle_R_anim.GetCurrentFrame(), 1.0f);
 
 	// ----- Ball creation -----
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
@@ -220,7 +200,6 @@ update_status ModuleSceneIntro::Update()
 	{
 		int x, y;
 		c->data->GetPosition(x, y);
-		//App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
 		c = c->next;
 	}
 
@@ -230,7 +209,6 @@ update_status ModuleSceneIntro::Update()
 	{
 		int x, y;
 		c->data->GetPosition(x, y);
-		App->renderer->Blit(box, x, y, NULL, 1.0f, c->data->GetRotation());
 		c = c->next;
 	}
 
@@ -240,19 +218,18 @@ update_status ModuleSceneIntro::Update()
 	{
 		int x, y;
 		c->data->GetPosition(x, y);
-		App->renderer->Blit(rick, x, y, NULL, 1.0f, c->data->GetRotation());
 		c = c->next;
 	}
 
+	// ------ Blitting ball textures ------
 	for (p2List_item<PhysBody*>* bc = balls.getFirst(); bc != NULL; bc = bc->next)
 	{
 		int x, y;
 		bc->data->GetPosition(x, y);
 		App->renderer->Blit(flippers_and_ball, x, y, &ballsprite, 1.0f,bc->data->GetRotation());
-		
 	}
 
-	// Ball lost control
+	// --------- Ball lost control ----------
 	if (ball_lost)
 	{
 		for (p2List_item<PhysBody*>* bc = balls.getFirst(); bc != NULL; bc = bc->next)
@@ -270,7 +247,7 @@ update_status ModuleSceneIntro::Update()
 		ball_lost = false;
 	}
 
-	//Game is over!
+	//------ Game over ---------
 	if (balls_left == 0 )
 	{
 		if (App->ui->score > highest_score)
@@ -288,8 +265,6 @@ update_status ModuleSceneIntro::Update()
 
 void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-
-	App->audio->PlayFx(bonus_fx);
 
 	for (p2List_item<PhysBody*>* bc = balls.getFirst(); bc != NULL; bc = bc->next)
 	{
@@ -332,9 +307,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 void ModuleSceneIntro::setWalls() {
 
-	// Here we create all chains of the scene
-
-	// Bouncing triangles
+	// Here we create all chains 
 
 	int points_triangle_R_sensor[8] =
 	{
@@ -380,8 +353,6 @@ void ModuleSceneIntro::setWalls() {
 
 	pinball_walls.add(App->physics->CreateChain(0, 0, points_triangle_R, 12, groupIndex::RIGID_PINBALL, 0.1f, NO_DEF_));
 
-
-	// Static walls
 
 	int points_top_wall[50] = {
 		200, 924,

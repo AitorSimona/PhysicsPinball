@@ -35,24 +35,6 @@ bool ModulePhysics::Start()
 	b2BodyDef bd;
 	ground = world->CreateBody(&bd);
 
-	// big static circle as "ground" in the middle of the screen
-	//int x = SCREEN_WIDTH / 2;
-	//int y = SCREEN_HEIGHT / 1.5f;
-	//int diameter = SCREEN_WIDTH / 2;
-
-	//b2BodyDef body;
-	//body.type = b2_staticBody;
-	//body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
-
-	//b2Body* big_ball = world->CreateBody(&body);
-
-	//b2CircleShape shape;
-	//shape.m_radius = PIXEL_TO_METERS(diameter) * 0.5f;
-
-	//b2FixtureDef fixture;
-	//fixture.shape = &shape;
-	//big_ball->CreateFixture(&fixture);
-
 	return true;
 }
 
@@ -85,7 +67,7 @@ PhysBody* ModulePhysics::CreateRightFlipper(int x, int y, int flippertype,int ch
 
 	b2PolygonShape flipperShape;
 
-	if (flippertype == 1)
+	if (flippertype == 1) //Big flipper
 	{
 		int rightFlipperCoords[16] =
 		{
@@ -112,7 +94,7 @@ PhysBody* ModulePhysics::CreateRightFlipper(int x, int y, int flippertype,int ch
 
 	}
 
-	else
+	else  //Small flipper
 	{
 		int rightFlipperCoords[12] =
 		{
@@ -139,7 +121,7 @@ PhysBody* ModulePhysics::CreateRightFlipper(int x, int y, int flippertype,int ch
 	// ----- Setting up flipper body ------
 	b2FixtureDef rectangleFixtureDef;
 	rectangleFixtureDef.shape = &flipperShape;
-	rectangleFixtureDef.density = 10.0f;
+	rectangleFixtureDef.density = 2.0f;
 	rectangleFixtureDef.friction = 0.0f;
 	rectangleFixtureDef.restitution = 0.1f;
 	rectangleFixtureDef.filter.groupIndex = groupIndex::RIGID_PINBALL;
@@ -193,7 +175,7 @@ PhysBody* ModulePhysics::CreateLeftFlipper(int x, int y, int flippertype,int cha
 
 	b2PolygonShape rectangleShape;
 
-	if (flippertype == 1)
+	if (flippertype == 1)  
 	{
 		int leftFlipperCoords[14] =
 		{
@@ -240,18 +222,18 @@ PhysBody* ModulePhysics::CreateLeftFlipper(int x, int y, int flippertype,int cha
 
 	}
 
-	// ----- Setting up flipper body ------
+	// ----- Flipper body ------
 	b2FixtureDef rectangleFixtureDef;
 	rectangleFixtureDef.shape = &rectangleShape;
-	rectangleFixtureDef.density = 10.0f;
+	rectangleFixtureDef.density = 2.0f;
 	rectangleFixtureDef.filter.groupIndex = groupIndex::RIGID_PINBALL;
 	rectangleBody->CreateFixture(&rectangleFixtureDef);
 
-	// ------ Settting joint point -------
+	// ------ Joint point -------
 	b2Vec2 centerRectangle = rectangleBody->GetWorldCenter();
 	centerRectangle += (b2Vec2(PIXEL_TO_METERS(-chainsize*2), 0));
 
-	// ------ Setting up circle body ----- 
+	// ------ Circle body ----- 
 	b2BodyDef circleBodyDef;
 	circleBodyDef.type = b2_staticBody;
 	circleBodyDef.position.Set(centerRectangle.x, centerRectangle.y);
@@ -266,7 +248,7 @@ PhysBody* ModulePhysics::CreateLeftFlipper(int x, int y, int flippertype,int cha
 
 	circleToRotateBody->CreateFixture(&circleToRotateFixtureDef);
 
-	// ----- Setting up joint between flipper and circle ------
+	// ----- Joint between flipper and circle ------
 	b2RevoluteJointDef revoluteJointFlipper;
 	revoluteJointFlipper.Initialize(rectangleBody, circleToRotateBody, centerRectangle);
 	revoluteJointFlipper.upperAngle = 0.6f;
@@ -275,6 +257,7 @@ PhysBody* ModulePhysics::CreateLeftFlipper(int x, int y, int flippertype,int cha
 	revoluteJointFlipper.maxMotorTorque = 10.0;
 	revoluteJointFlipper.motorSpeed = 0.0;
 	revoluteJointFlipper.enableMotor = true;
+
 	b2Joint *jointToReturn = world->CreateJoint(&revoluteJointFlipper);
 
 	PhysBody* rbody = new PhysBody();
@@ -341,19 +324,19 @@ PhysBody* ModulePhysics::CreateGear(int x, int y, int chainsize)
 
 	rectangleShape.CreateLoop(GearVec, 33);
 
-	// ----- Setting up Gear body ------
+	// -----  Gear body ------
 	b2FixtureDef rectangleFixtureDef;
 	rectangleFixtureDef.shape = &rectangleShape;
-	rectangleFixtureDef.density = 10.f; 
-	rectangleFixtureDef.restitution = 1.3f;
+	rectangleFixtureDef.density = 10.0f; 
+	rectangleFixtureDef.restitution = 1.2f;
 	rectangleFixtureDef.filter.groupIndex = groupIndex::RIGID_PINBALL;
 	rectangleBody->CreateFixture(&rectangleFixtureDef);
 
-	// ------ Settting joint point -------
+	// ------ Joint point -------
 	b2Vec2 centerRectangle = rectangleBody->GetWorldCenter();
 	centerRectangle += (b2Vec2(PIXEL_TO_METERS(65), PIXEL_TO_METERS(65)));
 
-	// ------ Setting up circle body ----- 
+	// ------ Circle body ----- 
 	b2BodyDef circleBodyDef;
 	circleBodyDef.type = b2_staticBody;
 	circleBodyDef.position.Set(centerRectangle.x, centerRectangle.y);
@@ -368,7 +351,7 @@ PhysBody* ModulePhysics::CreateGear(int x, int y, int chainsize)
 
 	circleToRotateBody->CreateFixture(&circleToRotateFixtureDef);
 
-	// ----- Setting up joint between Gear and circle ------
+	// ----- Joint between Gear and circle ------
 	b2RevoluteJointDef revoluteJointGear;
 	revoluteJointGear.Initialize(rectangleBody, circleToRotateBody, centerRectangle);
 	revoluteJointGear.upperAngle = 0.0f;
@@ -637,8 +620,8 @@ update_status ModulePhysics::PostUpdate()
 
 	b2Vec2 mouse_position(PIXEL_TO_METERS(App->input->GetMouseX()), PIXEL_TO_METERS(App->input->GetMouseY()));
 
-	// Bonus code: this will iterate all objects in the world and draw the circles
-	// You need to provide your own macro to translate meters to pixels
+	// this will iterate all objects in the world and draw them
+	
 	for(b2Body* b = world->GetBodyList(); b; b = b->GetNext())
 	{
 		for(b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
@@ -707,9 +690,7 @@ update_status ModulePhysics::PostUpdate()
 				break;
 			}
 
-			// TODO 1: If mouse button 1 is pressed ...
-			// App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN
-			// test if the current body contains mouse position
+	        //If body is in mouseposition...
 			if(mouse_down == true && body_clicked == NULL)
 			{
 				if(f->GetShape()->TestPoint(b->GetTransform(), mouse_position) == true)
@@ -720,8 +701,6 @@ update_status ModulePhysics::PostUpdate()
 
 	// If a body was selected we will attach a mouse joint to it
 	// so we can pull it around
-	// TODO 2: If a body was selected, create a mouse joint
-	// using mouse_joint class property
 	if(body_clicked != NULL && mouse_joint == NULL)
 	{
 		b2MouseJointDef def;
@@ -735,7 +714,7 @@ update_status ModulePhysics::PostUpdate()
 		mouse_joint = (b2MouseJoint*) world->CreateJoint(&def);
 	}
 
-	// TODO 3: If the player keeps pressing the mouse button, update
+	// If the player keeps pressing the mouse button, update
 	// target position and draw a red line between both anchor points
 	if(mouse_repeat == true && mouse_joint != NULL)
 	{
@@ -747,7 +726,7 @@ update_status ModulePhysics::PostUpdate()
 
 	}
 
-	// TODO 4: If the player releases the mouse button, destroy the joint
+	//If the player releases the mouse button, destroy the joint
 	if(mouse_up == true && mouse_joint != NULL)
 	{
 		world->DestroyJoint(mouse_joint);
@@ -815,7 +794,6 @@ int PhysBody::RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& no
 	{
 		if(fixture->GetShape()->RayCast(&output, input, body->GetTransform(), 0) == true)
 		{
-			// do we want the normal ?
 
 			float fx = x2 - x1;
 			float fy = y2 - y1;
