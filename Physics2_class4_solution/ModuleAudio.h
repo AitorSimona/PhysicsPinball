@@ -2,16 +2,18 @@
 #define __ModuleAudio_H__
 
 #include "Module.h"
-#include "SDL_mixer\include\SDL_mixer.h"
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
+
+struct _Mix_Music;
+struct Mix_Chunk;
 
 class ModuleAudio : public Module
 {
 public:
 
 	ModuleAudio(Application* app, bool start_enabled = true);
-	~ModuleAudio();
+	virtual ~ModuleAudio();
 
 	bool Init();
 	bool CleanUp();
@@ -27,9 +29,10 @@ public:
 
 
 	bool isAudioDeviceOpened;
+
 private:
 
-	Mix_Music*			music;
+	_Mix_Music*			music;
 	p2List<Mix_Chunk*>	fx;
 };
 

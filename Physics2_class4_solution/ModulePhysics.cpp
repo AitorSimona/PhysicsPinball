@@ -397,6 +397,7 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
 	pbody->body = b;
 	b->SetUserData(pbody);
 	pbody->width = pbody->height = radius;
+	pbody->physType = SCORE_BLOCK;
 
 	return pbody;
 }
@@ -453,7 +454,7 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height)
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int height, Module *listener)
+PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int height, PhysBody_Type sensor_type)
 {
 	b2BodyDef body;
 	body.type = b2_staticBody;
@@ -476,8 +477,7 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 	b->SetUserData(pbody);
 	pbody->width = width;
 	pbody->height = height;
-	pbody->listener = listener;
-	pbody->physType = SENSOR;
+	pbody->physType = sensor_type;
 
 	return pbody;
 }

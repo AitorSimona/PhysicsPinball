@@ -13,7 +13,7 @@ private :
 public:
 	Application* App;
 
-	Module(Application* parent, bool start_enabled = true) : App(parent), enabled(start_enabled)
+	Module(Application* parent, bool start_enabled = true) : App(parent), enabled(start_enabled),active(false)
 	{}
 
 	virtual ~Module()
@@ -44,6 +44,7 @@ public:
 
 	virtual bool Init() 
 	{
+		active = true;
 		return true; 
 	}
 
@@ -75,4 +76,8 @@ public:
 	virtual void OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	{
 	}
+
+public:
+
+	bool	active;
 };

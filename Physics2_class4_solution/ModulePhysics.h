@@ -27,6 +27,8 @@ enum PhysBody_Type {
 	BALL_,
 	TRIANGLE,
 	SENSOR,
+	DEAD_SENSOR,
+	SCORE_BLOCK,
 	
 	NO_DEF_
 };
@@ -73,7 +75,7 @@ public:
 	PhysBody* CreateCircle(int x, int y, int radius);
 	PhysBody* CreateCircleSensor(int x, int y, int radius, Module *listener);
 	PhysBody* CreateRectangle(int x, int y, int width, int height);
-	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, Module* listener);
+	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, PhysBody_Type sensor_type);
 	PhysBody* CreateChain(int x, int y, int* points, int size, groupIndex index, float restitution, PhysBody_Type type);
 
 	// b2ContactListener ---

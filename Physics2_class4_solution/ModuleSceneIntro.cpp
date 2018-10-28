@@ -28,7 +28,7 @@ bool ModuleSceneIntro::Start()
 	balls_left = 3;
 	App->ui->score = 0;
 
-	if (!App->audio->IsEnabled() && App->audio->isAudioDeviceOpened) {
+	if (!App->audio->IsEnabled() && App->audio->active) {
 		App->audio->Enable();
 		App->audio->Init();
 	}
@@ -45,14 +45,18 @@ bool ModuleSceneIntro::Start()
 	
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
-	//if (App->audio->isAudioDeviceOpened)
-	//{
-	//	/*hole_in_fx = App->audio->LoadFx("audio/sound_fx/hole_in.wav");*/
-	//
+	//Initializing variables
+	spawnBall_Oncollision = false;
+	prev_ballCount = 1;
+	ball_lost = false;
 
-	//	if (!App->audio->PlayMusic("audio/music/Nightmaren.ogg"))
-	//		ret = false;
-	//}
+	
+		/*hole_in_fx = App->audio->LoadFx("audio/sound_fx/hole_in.wav");*/
+	
+
+		if (!App->audio->PlayMusic("audio/music/bg_music.ogg"))
+			ret = false;
+	
 
 	//Loading textures
 
@@ -84,14 +88,13 @@ bool ModuleSceneIntro::Start()
 	// ------- Setting up wall chains -------
 	setWalls();
 
-	App->player->Enable();
-
-	// Spawning ball
-	spawnBall();
+	//Setting sensors
+	sensors.add(App->physics->CreateCircleSensor(513, 233, 18, this));
+	sensors.add(App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2 - 20, SCREEN_HEIGHT + 80, 150, 80, DEAD_SENSOR));
 
 	//Creating score_blocks
 
-	score_block1=App->physics->CreateCircle(375,160,20);
+	score_block1 = App->physics->CreateCircle(375, 160, 20);
 	score_block2 = App->physics->CreateCircle(285, 160, 20);
 	score_block3 = App->physics->CreateCircle(195, 160, 20);
 	score_block4 = App->physics->CreateCircle(462, 160, 20);
@@ -106,8 +109,12 @@ bool ModuleSceneIntro::Start()
 	circles.add(score_block5);
 	circles.add(score_block6);
 	circles.add(score_block7);
-	
-	sensor = App->physics->CreateCircleSensor(513, 233, 18, this);
+
+	App->player->Enable();
+
+	// Spawning ball
+	spawnBall();
+
 	return ret;
 }
 
@@ -131,6 +138,11 @@ bool ModuleSceneIntro::CleanUp()
 		App->physics->world->DestroyBody(circlesitem->data->body);
 	}
 
+	for (p2List_item<PhysBody*>* sensors_item = sensors.getFirst(); sensors_item != NULL; sensors_item = sensors_item->next)
+	{
+		App->physics->world->DestroyBody(sensors_item->data->body);
+	}
+
 	if (triangle_L != NULL)
 	{
 		App->physics->world->DestroyBody(triangle_L->body);
@@ -142,6 +154,7 @@ bool ModuleSceneIntro::CleanUp()
 		App->physics->world->DestroyBody(triangle_R->body);
 		triangle_R = NULL;
 	}
+
 
 	App->player->CleanUp();
 	App->player->Disable();
@@ -157,6 +170,8 @@ bool ModuleSceneIntro::CleanUp()
 
 	balls.clear();
 	pinball_walls.clear();
+	sensors.clear();
+	circles.clear();
 
 	return true;
 }
@@ -182,6 +197,7 @@ update_status ModuleSceneIntro::Update()
 	if (spawnBall_Oncollision == true)
 	{
 		App->scene_intro->spawnBall2();
+		balls_left++;
 		spawnBall_Oncollision = false;
 	}
 
@@ -224,6 +240,31 @@ update_status ModuleSceneIntro::Update()
 		
 	}
 
+	// Ball lost control
+	if (ball_lost)
+	{
+		for (p2List_item<PhysBody*>* bc = balls.getFirst(); bc != NULL; bc = bc->next)
+		{
+			App->physics->world->DestroyBody(bc->data->body);	
+			balls_left--;
+		}
+
+		balls.clear();
+
+		if (balls_left > 0) {
+			spawnBall();
+		}
+
+		ball_lost = false;
+	}
+
+	//Game is over!
+	if (balls_left == 0 && App->fade->FadeIsOver())
+	{
+		/*App->audio->PlayFx(win_fx);*/
+		App->fade->FadeToBlack(this, this, 7.0f);
+	}
+
 	return UPDATE_CONTINUE;
 }
 
@@ -252,6 +293,18 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 						spawnBall_Oncollision = true;
 					}
 				}
+			}
+
+			if (bodyB->physType == DEAD_SENSOR)
+			{
+				/*App->audio->PlayFx(lose_fx);*/
+				ball_lost = true;
+			}
+
+			if (bodyB->physType == SCORE_BLOCK)
+			{
+				App->ui->score += 100;
+				/*App->audio->PlayFx(lose_fx);*/
 			}
 		}
 

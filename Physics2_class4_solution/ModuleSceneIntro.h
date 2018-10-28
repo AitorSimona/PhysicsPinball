@@ -29,10 +29,11 @@ public:
 
 	PhysBody* sensor;
 	bool sensed;
+	bool ball_lost;
 
 	//Circle sensor oncollision checker
-	bool spawnBall_Oncollision = false;
-	int prev_ballCount = 1;
+	bool spawnBall_Oncollision;
+	int prev_ballCount;
 
 	SDL_Texture* circle;
 	SDL_Texture* box;
@@ -62,6 +63,11 @@ public:
 	//PhysBody variables
 	p2List<PhysBody*> balls;
 	p2List<PhysBody*> pinball_walls;
+	p2List<PhysBody*> sensors;
 	PhysBody* triangle_L;
 	PhysBody* triangle_R;
+
+
+	//Music and FX
+
 };
