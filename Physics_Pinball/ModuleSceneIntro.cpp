@@ -483,6 +483,21 @@ void ModuleSceneIntro::setWalls() {
 
 	pinball_walls.add(App->physics->CreateChain(0, 0, aux_stick2, 4, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
 
+	int aux_stick3[4] = {
+		224, 690,
+		232, 704
+	};
+
+	pinball_walls.add(App->physics->CreateChain(0, 0, aux_stick3, 4, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
+
+
+	int aux_stick4[4] = {
+		245, 774,
+		254, 793
+	};
+
+	pinball_walls.add(App->physics->CreateChain(0, 0, aux_stick4, 4, groupIndex::RIGID_PINBALL, 0.01f, NO_DEF_));
+
 }
 
 void ModuleSceneIntro::spawnBall()
